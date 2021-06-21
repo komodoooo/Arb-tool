@@ -15,12 +15,13 @@ ARB Sitescreener commands:
 help     => help :kek:
 ```
 
+**DISCLAIMER: if the localhost is no detectable, arb give you an error.**
+
 # Dependencies:
 
 - The ruby programming language
 - the gems 'http' and 'sniffer'
 
-**DISCLAIMER: if the localhost is no detectable, arb give you an error.**
 
 # Credits
 By **me**, it took me about 15/30 minutes lol.

@@ -8,10 +8,12 @@ After installing ruby ​​run _Setup.sh_ which will install the necessary depe
 It will give you the following output:
 ARB Sitescreener commands:
 
-`-local   => sniff the local traffic`
-`-dns     => sniff a user target`
-`-R       => reset`
-`help     => help :kek:`
+```
+-local   => sniff the local traffic
+-dns     => sniff a user target
+-R       => reset
+help     => help :kek:
+```
 
 # Dependencies:
 

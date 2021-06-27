@@ -9,10 +9,10 @@ It will give you the following output:
 ARB Sitescreener commands:
 
 ```
--local   => sniff the local traffic
--dns     => sniff a user target
--R       => reset
-help     => help :kek:
+local   => sniff the local traffic
+dns     => sniff a user target
+-r      => reset
+help    => help you :kek:
 ```
 
 **DISCLAIMER: if the localhost is no detectable, arb give you an error.**
@@ -20,7 +20,7 @@ help     => help :kek:
 # Dependencies:
 
 - The ruby programming language
-- the gems 'http' and 'sniffer'
+- The gems 'http' and 'sniffer'
 
 
 # Credits

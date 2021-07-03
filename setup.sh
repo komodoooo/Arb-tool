@@ -1,6 +1,6 @@
 #!usr/bin/bash
-
-chmod +x ARBtool.rb
+apt-get install ruby
 gem install 'http'
 gem install 'sniffer'
+chmod +x ARBtool.rb
 ruby ARBtool.rb

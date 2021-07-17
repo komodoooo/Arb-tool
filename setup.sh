@@ -1,6 +1,7 @@
 #!usr/bin/bash
-apt-get install ruby
+echo "Sometimes some gems are not available for download"
+chmod +x ARBtool.rb
 gem install 'http'
 gem install 'sniffer'
-chmod +x ARBtool.rb
+gem install 'scruber'
 ruby ARBtool.rb

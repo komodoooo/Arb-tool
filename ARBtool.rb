@@ -1,13 +1,13 @@
 #!usr/bin/env ruby
-
+require 'scruber'
 require 'http'
 require 'sniffer'
 
 
 def help
     puts "\rARB Sitescreener commands:"
-    puts "local   => sniff the local traffic"
-    puts "dns     => sniff a user target"
+    puts "local   => parse the localhost"
+    puts "dns     => parse an user target"
     puts "-r      => reset & clear display"
     puts "help    => help you :kek:"
 end
@@ -19,9 +19,16 @@ while (input = gets.chomp)
 break if input == "exit"
     print prompt && input
     if input == "local"
+        puts "\rSelect a port: (default 80)"
         def local
+            port = 80
+            localport = gets.chomp
+            print localport
+            if localport == true
+                port = localport
+            end
             Sniffer.enable!
-            HTTP.get('http://localhost')
+            HTTP.get("http://127.0.0.1:#{port}")
             Sniffer.data[0].to_h
             raise 'Something Wrong, retry.'
         end
@@ -35,6 +42,13 @@ break if input == "exit"
             Sniffer.enable!
             HTTP.get(input_target)
             Sniffer.data[0].to_h
+            Scruber.run do
+                csv_file 'output.csv', col_sep: ','
+                get "#{input_target}"
+                parse :html do |page, html|
+                    csv_out html.at('title').text
+                end
+            end
         end
         target.each do |output|
             print output

@@ -1,6 +1,6 @@
 # ARB sitescreener
 what is **arb**, the site screener?
-arb is a tool written in ruby ​​which, in addition to describing various information about a target site (_host, port, etc._), also captures the code and returns it to you as output.
+arb is a tool written in ruby ​​which, in addition to describing various information about a target site (_host, port, etc._), also captures the fingerprint and returns it to you as output.
 
 # Getting started
 
@@ -8,20 +8,17 @@ After installing ruby ​​run _Setup.sh_ which will install the necessary depe
 It will give you the following output:
 ARB Sitescreener commands:
 
-```
-local   => sniff the local traffic
-dns     => sniff a user target
--r      => reset
-help    => help you :kek:
-```
-
-**DISCLAIMER: if the localhost is no detectable, arb give you an error.**
+`-local   => parse the localhost`
+`-dns     => parse an user target`
+`-r       => reset & clear display`
+`help     => help :kek:`
 
 # Dependencies:
 
 - The ruby programming language
-- The gems 'http' and 'sniffer'
+- the gems 'http' and 'sniffer'
 
+**DISCLAIMER: if the localhost is no detectable, arb give you an error.**
 
 # Credits
-By **me**, it took me about 15/30 minutes lol.
+By **me**, at first it took me about 15/30 minutes lol.

@@ -1,5 +1,4 @@
 #!usr/bin/env ruby
-require 'scruber'
 require 'http'
 require 'sniffer'
 
@@ -42,13 +41,6 @@ break if input == "exit"
             Sniffer.enable!
             HTTP.get(input_target)
             Sniffer.data[0].to_h
-            Scruber.run do
-                csv_file 'output.csv', col_sep: ','
-                get "#{input_target}"
-                parse :html do |page, html|
-                    csv_out html.at('title').text
-                end
-            end
         end
         target.each do |output|
             print output

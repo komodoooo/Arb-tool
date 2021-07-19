@@ -18,7 +18,7 @@ help     => help :kek:
 # Dependencies:
 
 - The ruby programming language
-- the gems 'http' and 'sniffer'
+- the gems 'http', 'sniffer', 'nokogiri', 'open-url'
 
 **DISCLAIMER: if the localhost is no detectable, arb give you an error.**
 

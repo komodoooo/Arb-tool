@@ -1,7 +1,8 @@
 #!usr/bin/env ruby
 require 'http'
 require 'sniffer'
-
+require 'nokogiri'
+require 'open-uri'
 
 def help
     puts "\rARB Sitescreener commands:"
@@ -35,21 +36,30 @@ break if input == "exit"
     end
     if input == "dns"
         puts "\rSelect a valid target:"
-        def target
-            input_target = gets.chomp
-            puts input_target
-            Sniffer.enable!
-            HTTP.get(input_target)
-            Sniffer.data[0].to_h
+        class Spidercute
+            def target
+                url_target = gets.chomp
+                puts url_target
+                if url_target == nil
+                    puts "Not a valid target"
+                    return
+                end
+                Sniffer.enable!
+                HTTP.get(url_target)
+                Sniffer.data[0].to_h
+                uwu = Nokogiri::HTML(open(url_target))
+                print uwu
+            end
         end
-        target.each do |output|
+        crawling = Spidercute.new
+        crawling.target do |output|
             print output
             puts "\n"
         end
     end
     if input == "-r"
             Sniffer.reset!
-            system("clear")
+            system('clear')
             print "Resetted!"
             puts "\n"
     else
@@ -57,8 +67,12 @@ break if input == "exit"
     end
     if input == "help"
         print help
+    elsif input == nil
+        puts "\rnil"
+        return
     end
 
 system(input)
 print prompt
 end
+

@@ -1,4 +1,4 @@
-# ARB sitescreener
+# ARB site parser
 what is **arb**, the site screener?
 arb is a tool written in ruby ​​which, in addition to describing various information about a target site (_host, port, etc._), also captures the fingerprint and returns it to you as output.
 

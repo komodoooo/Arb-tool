@@ -47,7 +47,7 @@ break if input == "exit"
                 Sniffer.enable!
                 HTTP.get(url_target)
                 Sniffer.data[0].to_h
-                uwu = Nokogiri::HTML(open(url_target))
+                uwu = Nokogiri::XML(open(url_target))
                 print uwu
             end
         end

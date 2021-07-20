@@ -44,6 +44,10 @@ break if input == "exit"
                     puts "Not a valid target"
                     return
                 end
+                body = Nokogiri::HTML(open(url_target))
+                puts "\rHere html code:\n"
+                print body
+                puts "\rHere the site informations:\n"
                 Sniffer.enable!
                 HTTP.get(url_target)
                 Sniffer.data[0].to_h

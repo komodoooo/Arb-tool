@@ -12,9 +12,22 @@ def help
     puts "help    => help you :kek:"
 end
 
+def logo
+    banner = '''
+                  ___
+ ▄▀█ █▀█ █▄▄     / | \   
+ █▀█ █▀▄ █▄█    |--0--|   
+                 \_|_/        By LoJacopS
+'''
+    print banner
+    print Time.now
+    puts "\n"
+end
+
+print logo
 puts "Welcome to arb! The site analyzer!"
 puts "DISCLAIMER: if the localhost is no detectable, arb give you an error."
-prompt = "Arb>"
+prompt = "\rArb>"
 while (input = gets.chomp)
 break if input == "exit"
     print prompt && input
@@ -27,9 +40,16 @@ break if input == "exit"
             if localport == true
                 port = localport
             end
+            puts "\rHere the local informations:\n"
             Sniffer.enable!
+            lel = Nokogiri::HTML(open("127.0.0.1:#{port}"))
+            inlines = lel.xpath('//script[not(@src)]')
+            inlines.each do |sus|
+                puts "-"*50, sus.text
+            end
             HTTP.get("http://127.0.0.1:#{port}")
             Sniffer.data[0].to_h
+            Nokogiri::XML(open("127.0.0.1:#{port}"))
             raise 'Something Wrong, retry.'
         end
         print local
@@ -51,6 +71,10 @@ break if input == "exit"
                 Sniffer.enable!
                 HTTP.get(url_target)
                 Sniffer.data[0].to_h
+                inline = body.xpath('//script[not(@src)]')
+                inline.each do |script|
+                    puts "-"*50, script.text
+                end
                 uwu = Nokogiri::XML(open(url_target))
                 print uwu
             end
@@ -62,10 +86,10 @@ break if input == "exit"
         end
     end
     if input == "-r"
-            Sniffer.reset!
-            system('clear')
-            print "Resetted!"
-            puts "\n"
+        Sniffer.reset!
+        system('clear')
+        print "Resetted!"
+        puts "\n"
     else
         print "" 
     end
@@ -79,4 +103,3 @@ break if input == "exit"
 system(input)
 print prompt
 end
-

@@ -3,6 +3,6 @@ echo "Sometimes some gems are not available for download"
 gem install http
 gem install sniffer
 gem install nokogiri
-gem install open-url
+gem install open-uri
 chmod +x ARBtool.rb
 ruby ARBtool.rb

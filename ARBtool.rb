@@ -20,6 +20,8 @@ def logo
                  \_|_/        By LoJacopS
 '''
     print banner
+    puts "v1.4.2"
+    puts "\n"
     print Time.now
     puts "\n"
 end
@@ -28,6 +30,7 @@ print logo
 puts "Welcome to arb! The site analyzer!"
 puts "DISCLAIMER: if the localhost is no detectable, arb give you an error."
 prompt = "\rArb>"
+
 while (input = gets.chomp)
 break if input == "exit"
     print prompt && input
@@ -95,9 +98,9 @@ break if input == "exit"
     end
     if input == "help"
         print help
-    elsif input == nil
-        puts "\rnil"
-        return
+        commands = ['local', 'dns', '-r', 'help']
+    else input != commands
+        puts "\rArb: Command not found."
     end
 
 system(input)

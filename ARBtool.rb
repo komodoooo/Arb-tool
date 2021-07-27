@@ -1,15 +1,16 @@
 #!usr/bin/env ruby
 require 'http'
 require 'sniffer'
-require 'nokogiri'
+require 'mechanize'
 require 'open-uri'
 
 def help
     puts "\rARB Sitescreener commands:"
-    puts "local   => parse the localhost"
-    puts "dns     => parse an user target"
-    puts "-r      => reset & clear display"
-    puts "help    => help you :kek:"
+    puts "local        => parse the localhost"
+    puts "dns          => parse an user target"
+    puts "-r           => reset & clear display"
+    puts "help         => help you :kek:"
+    puts "linkshunt    => view the correlated links in a site\n"
 end
 
 def logo
@@ -20,7 +21,7 @@ def logo
                  \_|_/        By LoJacopS
 '''
     print banner
-    puts "v1.4.2"
+    puts "v1.5.0"
     puts "\n"
     print Time.now
     puts "\n"
@@ -44,14 +45,15 @@ break if input == "exit"
                 port = localport
             end
             puts "\rHere the local informations:\n"
-            Sniffer.enable!
             lel = Nokogiri::HTML(open("127.0.0.1:#{port}"))
+            print lel
+            Sniffer.enable!
+            HTTP.get("http://127.0.0.1:#{port}")
+            Sniffer.data[0].to_h
             inlines = lel.xpath('//script[not(@src)]')
             inlines.each do |sus|
                 puts "-"*50, sus.text
             end
-            HTTP.get("http://127.0.0.1:#{port}")
-            Sniffer.data[0].to_h
             Nokogiri::XML(open("127.0.0.1:#{port}"))
             raise 'Something Wrong, retry.'
         end
@@ -88,19 +90,32 @@ break if input == "exit"
             puts "\n"
         end
     end
+    if input == "linkshunt"
+        def owo
+            amogus = Mechanize.new
+            puts "\rinsert a link:"
+            url = gets.chomp
+            print url
+            puts "\rtarget selected: #{url}"
+            amogus.get(url).links.each do |link|
+                puts "correlated links at #{url} = #{link.uri}"
+            end  
+        end
+        print owo
+    end
     if input == "-r"
         Sniffer.reset!
         system('clear')
         print "Resetted!"
         puts "\n"
-    else
-        print "" 
     end
     if input == "help"
         print help
-        commands = ['local', 'dns', '-r', 'help']
+    elsif input == "banner"
+        print banner
+        commands = ['local', 'dns', '-r', 'help', 'linkshunt']
     else input != commands
-        puts "\rArb: Command not found."
+        puts "\r "
     end
 
 system(input)

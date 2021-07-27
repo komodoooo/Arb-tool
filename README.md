@@ -4,7 +4,7 @@ arb is a tool written in ruby ​​which, in addition to describing various inf
 
 # Getting started
 
-After installing ruby ​​run _Setup.sh_ which will install the necessary dependencies. After that, it will start arb for the first time. for more detailed information, type _`help`_
+After installing ruby ​​run _setup.sh_ which will install the necessary dependencies. After that, it will start arb for the first time. for more detailed information, type _`help`_
 It will give you the following output:
 ARB Sitescreener commands:
 

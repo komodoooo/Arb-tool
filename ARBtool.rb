@@ -37,7 +37,7 @@ break if input == "exit"
     print prompt && input
     if input == "local"
         puts "\rSelect a port: (default 80)"
-        def local
+        def local                                       
             port = 80
             localport = gets.chomp
             print localport
@@ -45,7 +45,7 @@ break if input == "exit"
                 port = localport
             end
             puts "\rHere the local informations:\n"
-            lel = Nokogiri::HTML(open("127.0.0.1:#{port}"))
+            lel = Nokogiri::HTML(open("127.0.0.1:#{port}")) 
             print lel
             Sniffer.enable!
             HTTP.get("http://127.0.0.1:#{port}")
@@ -69,14 +69,14 @@ break if input == "exit"
                     puts "Not a valid target"
                     return
                 end
-                body = Nokogiri::HTML(open(url_target))
+                body = Nokogiri::HTML(open(url_target))        #this is how works  to capture the html code, xml version and other informations
                 puts "\rHere html code:\n"
                 print body
                 puts "\rHere the site informations:\n"
                 Sniffer.enable!
-                HTTP.get(url_target)
+                HTTP.get(url_target)                    
                 Sniffer.data[0].to_h
-                inline = body.xpath('//script[not(@src)]')
+                inline = body.xpath('//script[not(@src)]')     
                 inline.each do |script|
                     puts "-"*50, script.text
                 end
@@ -96,7 +96,7 @@ break if input == "exit"
             puts "\rinsert a link:"
             url = gets.chomp
             print url
-            puts "\rtarget selected: #{url}"
+            puts "\rtarget selected: #{url}"                       #this instead is how it discovers hidden links
             amogus.get(url).links.each do |link|
                 puts "correlated links at #{url} = #{link.uri}"
             end  

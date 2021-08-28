@@ -1,25 +1,26 @@
-# ARB-tool
-what is **arb**, the site parser?
-arb is a tool written in ruby ​​which, in addition to describing various information about a target site (_host, port, etc._), also captures the fingerprint, the xml version and returns it to you as output. It can also find all links related to a site.
+# ARB sitescreener
+What is arb, the site parser? arb is a tool written in ruby ​​which, in addition to describing various information about a target site (host, port, etc.), also captures the fingerprint, the xml version and returns it to you as output. It can also find all links related to a site, or the open ports in an ip.
 
 # Getting started
 
-After installing ruby ​​run _setup.sh_ which will install the necessary dependencies. After that, it will start arb for the first time. for more detailed information, type _`help`_
+After installing ruby ​​run _Setup.sh_ which will install the necessary dependencies. After that, it will start arb for the first time. for more detailed information, type _`help`_
 It will give you the following output:
 ARB Sitescreener commands:
 
 ```
--local     => parse the localhost
--dns       => parse an user target
--r         => reset & clear display
-help       => help :kek:
-linkshunt  => view the correlated links in a site
+local        => analyze a localhost's site
+fingerprint  => capture the html code and parse an user target of a site
+linkshunt    => view the correlated links in a site
+portchecker  => check the open port on a target ip
+-r           => reset & clear display
+help         => help you :kek:
 ```
 
 # Dependencies:
 
 - The ruby programming language
-- the gems 'http', 'sniffer' 'mechanize', 'open-url'
+- The gems 'http', 'sniffer' 'mechanize', 'open-uri' (and socket system gem)
+- The framework nokogiri is already integrated into sniffer & mechanize gems
 
 **DISCLAIMER: if the localhost is no detectable, arb give you an error.**
 

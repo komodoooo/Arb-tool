@@ -9,7 +9,8 @@ ARB Sitescreener commands:
 
 ```
 local        => analyze a localhost's site
-fingerprint  => capture the html code and parse an user target of a site
+dns          => parse an user target (website)
+fingerprint  => capture the html code of a site
 linkshunt    => view the correlated links in a site
 portchecker  => check the open port on a target ip
 -r           => reset & clear display

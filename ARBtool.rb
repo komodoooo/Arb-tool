@@ -131,9 +131,9 @@ break if input == "exit"
                 time = 1
                 sockets = Socket.select(nil, [socket], nil, time)
                 if sockets
-                    puts "Port #{numbers} is open"
+                    puts "\rPort #{numbers} is open"
                 else  
-                    puts "Port #{numbers} is closed"
+                    puts "\rPort #{numbers} is closed"
                 end
             end
         end

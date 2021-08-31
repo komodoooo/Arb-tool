@@ -24,7 +24,7 @@ def logo
                  \_|_/        By LoJacopS
 '''
     print banner
-    puts "v1.6.2"
+    puts "v1.6.5"
     puts "\n"
     print Time.now
     puts "\n"
@@ -66,24 +66,28 @@ break if input == "exit"
         puts "\rSelect a valid target:"
         class Spidercute
             def target
-                url_target = gets.chomp
-                puts url_target
-                if url_target == nil
-                    puts "Not a valid target"
-                    return
+                begin
+                    url_target = gets.chomp
+                    puts url_target
+                    if url_target == nil
+                        puts "Not a valid target"
+                        return
+                    end
+                    body = Nokogiri::HTML(open(url_target))
+                    puts "\rHere the site informations:\n"
+                    Sniffer.enable!
+                    HTTP.get(url_target)
+                    Sniffer.data[0].to_h
+                    inline = body.xpath('//script[not(@src)]')
+                    inline.each do |script|
+                        puts "-"*50, script.text
+                    end
+                    puts "here the xml version:"
+                    version = open(url_target)
+                    Nokogiri::XML(open(version))
+                rescue Errno::ENOENT
+                    puts "\rselect a valid target! (example https://pornhub.com)"
                 end
-                body = Nokogiri::HTML(open(url_target))
-                puts "\rHere the site informations:\n"
-                Sniffer.enable!
-                HTTP.get(url_target)
-                Sniffer.data[0].to_h
-                inline = body.xpath('//script[not(@src)]')
-                inline.each do |script|
-                    puts "-"*50, script.text
-                end
-                puts "here the xml version:"
-                version = open(url_target)
-                Nokogiri::XML(open(version))
             end
         end
         crawling = Spidercute.new
@@ -132,9 +136,9 @@ break if input == "exit"
                 time = 1
                 sockets = Socket.select(nil, [socket], nil, time)
                 if sockets
-                    puts "\rPort #{numbers} is open"
+                    puts "Port #{numbers} is open"
                 else  
-                    puts "\rPort #{numbers} is closed"
+                    puts "Port #{numbers} is closed"
                 end
             end
         end

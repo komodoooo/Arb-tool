@@ -82,7 +82,8 @@ break if input == "exit"
                     puts "-"*50, script.text
                 end
                 puts "here the xml version:"
-                Nokogiri::XML(open(url_target))
+                version = open(url_target)
+                Nokogiri::XML(open(version))
             end
         end
         crawling = Spidercute.new

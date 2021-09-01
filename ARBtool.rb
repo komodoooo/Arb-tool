@@ -12,6 +12,7 @@ def help
     puts "fingerprint  => capture the html code of a site" 
     puts "linkshunt    => view the correlated links in a site"
     puts "portchecker  => check the open port on a target ip"
+    puts "xml-version  => show the xml version of a site"
     puts "-r           => reset & clear display"
     puts "help         => help you :kek:\r"  
 end
@@ -24,7 +25,7 @@ def logo
                  \_|_/        By LoJacopS
 '''
     print banner
-    puts "v1.6.5"
+    puts "v1.6.7"
     puts "\n"
     print Time.now
     puts "\n"
@@ -81,10 +82,7 @@ break if input == "exit"
                     inline = body.xpath('//script[not(@src)]')
                     inline.each do |script|
                         puts "-"*50, script.text
-                    end
-                    puts "here the xml version:"
-                    version = open(url_target)
-                    Nokogiri::XML(open(version))
+                    end               
                 rescue Errno::ENOENT
                     puts "\rselect a valid target! (example https://pornhub.com)"
                 end
@@ -143,6 +141,21 @@ break if input == "exit"
             end
         end
         print scan_port
+    end
+    if input == "xml-version"
+        def xml_v
+            begin
+                puts "\nsite with xml:"
+                version = gets.chomp
+                print version
+                e = open(version)
+                puts "\rHere the xml version:"
+                Nokogiri::XML(e)
+            rescue Errno::ENOENT
+                puts "\rselect a valid target! (example https://google.com)"
+            end
+        end
+        print xml_v
     end
     if input == "-r"
         Sniffer.reset!

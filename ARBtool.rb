@@ -30,8 +30,8 @@ def logo
     print Time.now
     puts "\n"
 end
-
 print logo
+
 puts "Welcome to arb! The site analyzer!"
 puts "DISCLAIMER: if the localhost is no detectable, arb give you an error."
 prompt = "\rArb>"
@@ -42,24 +42,28 @@ break if input == "exit"
     if input == "local"
         puts "\rSelect a port: (default 80)"
         def local
-            port = 80
-            localport = gets.chomp
-            print localport
-            if localport == true
+            begin
+                port = 80
+                localport = gets.chomp
+                print localport
+                if localport == true
                 port = localport
+                end
+                puts "\rHere the local informations:\n"
+                lel = Nokogiri::HTML(open("127.0.0.1:#{port}"))
+                print lel
+                Sniffer.enable!
+                HTTP.get("http://127.0.0.1:#{port}")
+                Sniffer.data[0].to_h
+                inlines = lel.xpath('//script[not(@src)]')
+                inlines.each do |sus|
+                    puts "-"*50, sus.text
+                end
+                raise 'Something Wrong, retry.'
+            rescue Errno::ENOENT
+                puts "enable to get the localhost"
+                return false
             end
-            puts "\rHere the local informations:\n"
-            lel = Nokogiri::HTML(open("127.0.0.1:#{port}"))
-            print lel
-            Sniffer.enable!
-            HTTP.get("http://127.0.0.1:#{port}")
-            Sniffer.data[0].to_h
-            inlines = lel.xpath('//script[not(@src)]')
-            inlines.each do |sus|
-                puts "-"*50, sus.text
-            end
-            Nokogiri::XML(open("127.0.0.1:#{port}"))
-            raise 'Something Wrong, retry.'
         end
         print local
     end
@@ -132,9 +136,9 @@ break if input == "exit"
                 rescue Errno::EINPROGRESS
                 end
                 time = 1
-                sockets = Socket.select(nil, [socket], nil, time)
+                sockets = Socket.select(nil, [socket], nil, time) 
                 if sockets
-                    puts "Port #{numbers} is open"
+                    puts "Port #{numbers} is open"                                          
                 else  
                     puts "Port #{numbers} is closed"
                 end
@@ -159,19 +163,19 @@ break if input == "exit"
     end
     if input == "-r"
         Sniffer.reset!
-        system('clear')
+        system('clear') 
         puts "Resetted!"
         puts "\n"
     end
     if input == "help"
         print help
     elsif input == "banner"
-        print banner
+        print logo
         commands = ['local', 'dns', '-r', 'help', 'linkshunt','fingerprint','portchecker']
     else input != commands
         puts "\r"
-    end
-
+    end  
+    
 system(input)
 print prompt
 end

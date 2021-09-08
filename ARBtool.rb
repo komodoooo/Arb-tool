@@ -168,26 +168,26 @@ break if input == "exit"
                 puts "\rlink: "
                 fuzz_option = gets.chomp
                 print fuzz_option
-                wordlist = ["access", "accessgranted", "accessibility", "accessories", "account", "about", "aboutUs", "admin", "administration", "archive", "articles", "backOffice",
-                    "blog", "books", "business", "CPAN", "CVS", "CYBERDOCS", "CYBERDOCS25", "CYBERDOCS31", 
-                    "ChangeLog", "domputers", "dontact", "dontactUs", "dontent", "dreatives", "default", "download", "Downloads", "downloads", "Education", 
-                    "English", "Entertainment", "Events", "Extranet", "FAQ", "Games", "Global", "Graphics", 
-                    "HTML", "Health", "Help", "Home", "INSTALL_admin", "Image", "image", 
-                    "Images", "images", "Index", "index", "Internet", "internet", "Java", "Legal", "Links", "links", 
-                    "Linux", "Log", "log", "Login", "login", "Logs", "logs", "MANIFEST.MF", "META-INF", "Main", "main", "Main_Page", "Media", "media", 
-                    "Members", "Menus", "Misc", "Music", "News", "OasDefault", "Office", "PHP", "PDF", "Pages", 
-                    "pages", "People", "Press", "Privacy", "Products", "Projects", 
-                    "Publications", "RCS", "README", "RSS", "RealMedia", "Research", "Resources", "Scripts", "scripts", "Search", "Security", "Services", 
-                    "Servlet", "Servlets", "SiteMap", "SiteServer", "Sites", "sites", "Software", "Sources", 
-                    "Sports", "Statistics", "Stats", "Support", "Technology", "Themes", "Travel", "US", "Utilities", "Video", "video", "W3SVC", "W3SVC1", 
-                    "W3SVC2", "W3SVC3", "WEB-INF", "Windows", "XML", "_admin", "_images", 
-                    "_mem_bin", "_pages", "_vti_aut", "_vti_bin", "_vti_cnf", "_vti_log", "_vti_pvt", "_vti_rpc", "abc", "about", "about-us", "about_us", 
-                    "aboutus", "abstract", "academic", "academics", "accountants", "accounting", 
-                    "accounts", "achitecture", "action", "actions", "active", "activities", "ad", "adclick", "add", "adlog", "adm", "admin", "admin_",
-                    "admin_login", "admin_logon", "adminhelp", "administrat", "administration", 
-                    "administrator", "adminlogin", "adminlogon", "adminsql", "admissions", "admon", "ads", "adsl", "adv", "advanced", "advanced_search", 
-                    "advertise", "advertisement", "advertising", "adview", "~adm", "~admin", "~administrator", 
-                    "~bin", "~ftp", "~guest", "~mail", "~operator", "~root", "~sys", "~sysadm", "~sysadmin", "~test", "~user", "~webmaster", "~www"
+                wordlist = ["access", "accessgranted", "accessibility", "accessories", "account", "about", "aboutus", "admin", "administration", "archive", "articles", "backoffice",
+                    "blog", "books", "business", "cpan", "cvs", "cyberdocs", "cyberdocs25", "cyberdocs31", 
+                    "changelog", "domputers", "dontact", "dontactus", "dontent", "dreatives", "default", "download", "downloads", "downloads", "education", 
+                   "english", "entertainment", "events", "extranet", "faq", "games", "global", "graphics", 
+                   "html", "health", "help", "home", "install_admin", "image",
+                   "images", "index", "internet", "java", "legal", "links", 
+                   "linux", "log", "login", "logs", "manifest.mf", "meta-inf", "main", "main", "main_page", "media", "media", 
+                   "members", "menus", "misc", "music", "news", "oasdefault", "office", "php", "pdf", "pages", 
+                   "pages", "people", "press", "privacy", "products", "projects", 
+                   "publications", "rcs", "readme", "rss", "realmedia", "research", "resources", "scripts", "scripts", "search", "security", "services", 
+                   "servlet", "servlets", "sitemap", "siteserver", "sites", "sites", "software", "sources", 
+                   "sports", "statistics", "stats", "support", "technology", "themes", "travel", "us", "utilities", "video", "video", "w3svc", "w3svc1", 
+                   "w3svc2", "w3svc3", "web-inf", "windows", "xml", "_admin", "_images", 
+                   "_mem_bin", "_pages", "_vti_aut", "_vti_bin", "_vti_cnf", "_vti_log", "_vti_pvt", "_vti_rpc", "abc", "about", "about-us", "about_us", 
+                   "aboutus", "abstract", "academic", "academics", "accountants", "accounting", 
+                   "accounts", "achitecture", "action", "actions", "active", "activities", "ad", "adclick", "add", "adlog", "adm", "admin", "admin_",
+                   "admin_login", "admin_logon", "adminhelp", "administrat", "administration", 
+                   "administrator", "adminlogin", "adminlogon", "adminsql", "admissions", "admon", "ads", "adsl", "adv", "advanced", "advanced_search", 
+                   "advertise", "advertisement", "advertising", "adview", "~adm", "~admin", "~administrator", 
+                   "~bin", "~ftp", "~guest", "~mail", "~operator", "~root", "~sys", "~sysadm", "~sysadmin", "~test", "~user", "~webmaster", "~www"
                 ]
                 wordlist.each do |dir|
                     uri = "#{fuzz_option}/#{dir}/"

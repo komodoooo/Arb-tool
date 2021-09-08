@@ -13,6 +13,7 @@ def help
     puts "linkshunt    => view the correlated links in a site"
     puts "portchecker  => check the open port on a target ip"
     puts "xml-version  => show the xml version of a site"
+    puts "fuzzer       => do the directory fuzzing in a site"
     puts "-r           => reset & clear display"
     puts "help         => help you :kek:\r"  
 end
@@ -25,7 +26,7 @@ def logo
                  \_|_/        By LoJacopS
 '''
     print banner
-    puts "v1.6.7"
+    puts "v1.6.8"
     puts "\n"
     print Time.now
     puts "\n"
@@ -161,6 +162,49 @@ break if input == "exit"
         end
         print xml_v
     end
+    if input == "fuzzer"
+        def fuzzer
+            begin
+                puts "\rlink: "
+                fuzz_option = gets.chomp
+                print fuzz_option
+                wordlist = ["access", "accessgranted", "accessibility", "accessories", "account", "about", "aboutUs", "admin", "administration", "archive", "articles", "backOffice",
+                    "blog", "books", "business", "CPAN", "CVS", "CYBERDOCS", "CYBERDOCS25", "CYBERDOCS31", 
+                    "ChangeLog", "domputers", "dontact", "dontactUs", "dontent", "dreatives", "default", "download", "Downloads", "downloads", "Education", 
+                    "English", "Entertainment", "Events", "Extranet", "FAQ", "Games", "Global", "Graphics", 
+                    "HTML", "Health", "Help", "Home", "INSTALL_admin", "Image", "image", 
+                    "Images", "images", "Index", "index", "Internet", "internet", "Java", "Legal", "Links", "links", 
+                    "Linux", "Log", "log", "Login", "login", "Logs", "logs", "MANIFEST.MF", "META-INF", "Main", "main", "Main_Page", "Media", "media", 
+                    "Members", "Menus", "Misc", "Music", "News", "OasDefault", "Office", "PHP", "PDF", "Pages", 
+                    "pages", "People", "Press", "Privacy", "Products", "Projects", 
+                    "Publications", "RCS", "README", "RSS", "RealMedia", "Research", "Resources", "Scripts", "scripts", "Search", "Security", "Services", 
+                    "Servlet", "Servlets", "SiteMap", "SiteServer", "Sites", "sites", "Software", "Sources", 
+                    "Sports", "Statistics", "Stats", "Support", "Technology", "Themes", "Travel", "US", "Utilities", "Video", "video", "W3SVC", "W3SVC1", 
+                    "W3SVC2", "W3SVC3", "WEB-INF", "Windows", "XML", "_admin", "_images", 
+                    "_mem_bin", "_pages", "_vti_aut", "_vti_bin", "_vti_cnf", "_vti_log", "_vti_pvt", "_vti_rpc", "abc", "about", "about-us", "about_us", 
+                    "aboutus", "abstract", "academic", "academics", "accountants", "accounting", 
+                    "accounts", "achitecture", "action", "actions", "active", "activities", "ad", "adclick", "add", "adlog", "adm", "admin", "admin_",
+                    "admin_login", "admin_logon", "adminhelp", "administrat", "administration", 
+                    "administrator", "adminlogin", "adminlogon", "adminsql", "admissions", "admon", "ads", "adsl", "adv", "advanced", "advanced_search", 
+                    "advertise", "advertisement", "advertising", "adview", "~adm", "~admin", "~administrator", 
+                    "~bin", "~ftp", "~guest", "~mail", "~operator", "~root", "~sys", "~sysadm", "~sysadmin", "~test", "~user", "~webmaster", "~www"
+                ]
+                wordlist.each do |dir|
+                    uri = "#{fuzz_option}/#{dir}/"
+                    request = HTTP.get(uri)
+                    print request.code
+                    if request.code == 200
+                        puts "\rdirectory open! '#{dir}'"
+                    elsif request.code == 404
+                        puts "\nscanning..."                       #directory closed
+                    end
+                end
+            rescue HTTP::Request::UnsupportedSchemeError
+                puts "\rselect a valid target! (example https://pain.net)"    
+            end
+        end
+        print fuzzer
+    end
     if input == "-r"
         Sniffer.reset!
         system('clear') 
@@ -171,11 +215,10 @@ break if input == "exit"
         print help
     elsif input == "banner"
         print logo
-        commands = ['local', 'dns', '-r', 'help', 'linkshunt','fingerprint','portchecker']
+        commands = ['local', 'dns', '-r', 'help', 'linkshunt','fingerprint','portchecker',"fuzzer"]
     else input != commands
         puts "\r"
-    end  
-    
+    end                                  
 system(input)
 print prompt
 end

@@ -168,27 +168,10 @@ break if input == "exit"
                 puts "\rlink: "
                 fuzz_option = gets.chomp
                 print fuzz_option
-                wordlist = ["access", "accessgranted", "accessibility", "accessories", "account", "about", "aboutus", "admin", "administration", "archive", "articles", "backoffice",
-                    "blog", "books", "business", "cpan", "cvs", "cyberdocs", "cyberdocs25", "cyberdocs31", 
-                    "changelog", "domputers", "dontact", "dontactus", "dontent", "dreatives", "default", "download", "downloads", "downloads", "education", 
-                   "english", "entertainment", "events", "extranet", "faq", "games", "global", "graphics", 
-                   "html", "health", "help", "home", "install_admin", "image",
-                   "images", "index", "internet", "java", "legal", "links", 
-                   "linux", "log", "login", "logs", "manifest.mf", "meta-inf", "main", "main", "main_page", "media", "media", 
-                   "members", "menus", "misc", "music", "news", "oasdefault", "office", "php", "pdf", "pages", 
-                   "pages", "people", "press", "privacy", "products", "projects", 
-                   "publications", "rcs", "readme", "rss", "realmedia", "research", "resources", "scripts", "scripts", "search", "security", "services", 
-                   "servlet", "servlets", "sitemap", "siteserver", "sites", "sites", "software", "sources", 
-                   "sports", "statistics", "stats", "support", "technology", "themes", "travel", "us", "utilities", "video", "video", "w3svc", "w3svc1", 
-                   "w3svc2", "w3svc3", "web-inf", "windows", "xml", "_admin", "_images", 
-                   "_mem_bin", "_pages", "_vti_aut", "_vti_bin", "_vti_cnf", "_vti_log", "_vti_pvt", "_vti_rpc", "abc", "about", "about-us", "about_us", 
-                   "aboutus", "abstract", "academic", "academics", "accountants", "accounting", 
-                   "accounts", "achitecture", "action", "actions", "active", "activities", "ad", "adclick", "add", "adlog", "adm", "admin", "admin_",
-                   "admin_login", "admin_logon", "adminhelp", "administrat", "administration", 
-                   "administrator", "adminlogin", "adminlogon", "adminsql", "admissions", "admon", "ads", "adsl", "adv", "advanced", "advanced_search", 
-                   "advertise", "advertisement", "advertising", "adview", "~adm", "~admin", "~administrator", 
-                   "~bin", "~ftp", "~guest", "~mail", "~operator", "~root", "~sys", "~sysadm", "~sysadmin", "~test", "~user", "~webmaster", "~www"
-                ]
+                puts "\rselect a wordlist:"
+                wordlist_option = gets.chomp
+                print wordlist_option
+                wordlist = File.open(wordlist_option)
                 wordlist.each do |dir|
                     uri = "#{fuzz_option}/#{dir}/"
                     request = HTTP.get(uri)
@@ -199,8 +182,10 @@ break if input == "exit"
                         puts "\nscanning..."                       #directory closed
                     end
                 end
-            rescue HTTP::Request::UnsupportedSchemeError
-                puts "\rselect a valid target! (example https://pain.net)"    
+            rescue Errno::ENOENT
+                puts "\rERROR: Select a valid wordlist"
+            rescue HTTP::ConnectionError
+                puts "\rERROR: Select a valid link"    
             end
         end
         print fuzzer

@@ -172,7 +172,8 @@ break if input == "exit"
                 wordlist_option = gets.chomp
                 print wordlist_option
                 wordlist = File.open(wordlist_option)
-                wordlist.each do |dir|
+                ohyes = wordlist.map {|x| x.chomp }
+                ohyes.each do |dir|
                     uri = "#{fuzz_option}/#{dir}/"
                     request = HTTP.get(uri)
                     print request.code

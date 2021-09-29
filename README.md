@@ -25,7 +25,7 @@ help         => help you :kek:
 - The gems 'http', 'sniffer' 'mechanize', 'open-uri' (and socket system gem)
 - The framework nokogiri is already integrated into sniffer & mechanize gems
 
-Only avaible on Linux
+Only avaible on Linux, |Tested on a linux subsystem.|
 
 **DISCLAIMER: if the localhost is no detectable, arb give you an error.**
 

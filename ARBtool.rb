@@ -126,8 +126,8 @@ break if input == "exit"
         def scan_port
             port_input = gets.chomp
             print port_input
-            ports = [15,21,22,25,26,80,110,143,200,443,587,993,995,1000,
-                    2077,2078,2082,2083,2086,2087,2095,2096,3080,3306       #most used ports
+            ports = [15,21,22,23,25,26,80,110,143,200,443,587,993,995,1000,
+                    2077,2078,2082,2083,2086,2087,2095,2096,3080,3306,3389       #most used ports
                 ]
             for numbers in ports
                 socket = Socket.new(:INET, :STREAM)
@@ -179,6 +179,10 @@ break if input == "exit"
                     print request.code
                     if request.code == 200
                         puts "\rdirectory open! '#{dir}'"
+                        log = File.new("Valid-dir.log", 'a')
+                        log.write(dir+"\n")
+                        log.close
+                        puts "saved on file Valid-dir.log!"
                     elsif request.code == 404
                         puts "\nscanning..."                       #directory closed
                     end

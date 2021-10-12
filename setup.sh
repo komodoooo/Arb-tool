@@ -5,6 +5,6 @@ apt-get install rubygems
 gem install http
 gem install sniffer
 gem install mechanize
-gem install open-url
+gem install open-uri
 chmod +x ARBtool.rb
 ruby ARBtool.rb

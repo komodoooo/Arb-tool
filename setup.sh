@@ -6,6 +6,5 @@ gem install http
 gem install sniffer
 gem install mechanize
 gem install open-uri
-gem install rex-sslscan
 chmod +x ARBtool.rb
 ruby ARBtool.rb

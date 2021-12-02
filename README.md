@@ -1,5 +1,5 @@
 # ARB sitescreener
-What is arb, the site parser? arb is a tool written in ruby ​​which, in addition to describing various information about a target site (host, port, etc.), also captures the fingerprint, the xml version and returns it to you as output. It can also find all links related to a site, or the open ports in an ip and fuzzing a directory in a site.
+What is arb, the site parser? arb is a tool written in ruby ​​which, in addition to describing various information about a target site (host, port, headers, etc.), also captures the fingerprint, the xml version and returns it to you as output. It can also find all links related to a site, or the open ports in an ip and fuzzing a directory in a site.
 
 # Getting started
 
@@ -30,4 +30,4 @@ Only avaible on Linux, |Tested on a linux subsystem.|
 **DISCLAIMER: if the localhost is no detectable, arb give you an error.**
 
 # Credits
-By **me**, at first it took me about 15/30 minutes lol.
+By **me**

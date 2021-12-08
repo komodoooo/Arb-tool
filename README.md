@@ -8,8 +8,8 @@ It will give you the following output:
 ARB Sitescreener commands:
 
 ```
-local        => analyze a localhost's site
-dns          => parse an user target (website)
+headers      => returns the headers of a site
+site         => parse an user target (website)
 fingerprint  => capture the html code of a site
 linkshunt    => view the correlated links in a site
 portchecker  => check the open port on a target ip
@@ -22,7 +22,7 @@ help         => help you :kek:
 # Dependencies:
 
 - The ruby programming language
-- The gems 'http', 'sniffer' 'mechanize', 'open-uri' (and socket system gem)
+- The gems 'http', 'sniffer' 'mechanize', 'open-uri' (and socket & net-http system gems)
 - The framework nokogiri is already integrated into sniffer & mechanize gems
 
 Only avaible on Linux, |Tested on a linux subsystem.|
@@ -31,3 +31,4 @@ Only avaible on Linux, |Tested on a linux subsystem.|
 
 # Credits
 By **me**
+

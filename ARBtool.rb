@@ -1,28 +1,28 @@
 #!usr/bin/env ruby
 require 'http'
-require 'sniffer'
+require 'net/http'
 require 'mechanize'
 require 'open-uri'
 require 'socket'
 
 def help
     puts "\rARB Sitescreener commands:"
-    puts "local        => analyze a localhost's site"
-    puts "dns          => parse an user target (website)"
-    puts "fingerprint  => capture the html code of a site" 
+    puts "headers      => returns the headers of a site"
+    puts "site         => parse an user target (website)"
+    puts "fingerprint  => capture the html body of a site"
     puts "linkshunt    => view the correlated links in a site"
     puts "portchecker  => check the open port on a target ip"
     puts "xml-version  => show the xml version of a site"
     puts "fuzzer       => do the directory fuzzing in a site"
     puts "-r           => reset & clear display"
-    puts "help         => help you :kek:\r"  
+    puts "help         => help you :kek:\r"
 end
 
 def logo
     banner = '''
                   ___
- ▄▀█ █▀█ █▄▄     / | \   
- █▀█ █▀▄ █▄█    |--0--|   
+ ▄▀█ █▀█ █▄▄     / | \
+ █▀█ █▀▄ █▄█    |--0--|
                  \_|_/        By LoJacopS
 '''
     print banner
@@ -34,41 +34,27 @@ end
 print logo
 
 puts "Welcome to arb! The site analyzer!"
-puts "DISCLAIMER: if the localhost is no detectable, arb give you an error."
+
 prompt = "\rArb>"
 
 while (input = gets.chomp)
 break if input == "exit"
     print prompt && input
-    if input == "local"
-        puts "\rSelect a port: (default 80)"
-        def local
-            begin
-                port = 80
-                localport = gets.chomp
-                print localport
-                if localport == true
-                port = localport
-                end
-                puts "\rHere the local informations:\n"
-                lel = Nokogiri::HTML(open("127.0.0.1:#{port}"))
-                print lel
-                Sniffer.enable!
-                HTTP.get("http://127.0.0.1:#{port}")
-                Sniffer.data[0].to_h
-                inlines = lel.xpath('//script[not(@src)]')
-                inlines.each do |sus|
-                    puts "-"*50, sus.text
-                end
-                raise 'Something Wrong, retry.'
-            rescue Errno::ENOENT
-                puts "enable to get the localhost"
-                return false
-            end
+    if input == "headers"
+        begin
+            puts "\rTarget:"
+            sessoinput = gets.chomp
+            urii = URI("#{sessoinput}")
+            response = Net::HTTP.get_response(urii)
+            response['Set-Cookie']                      #get the sexy headers
+            response.get_fields('set-cookie') 
+            response.to_hash['set-cookie']    
+            puts "Headers:\n #{response.to_hash.inspect}"
+        rescue Errno::ENOENT
+            puts "\rselect a valid target! (example https://pornhub.com)"
         end
-        print local
     end
-    if input == "dns"
+    if input == "site"
         puts "\rSelect a valid target:"
         class Spidercute
             def target
@@ -81,13 +67,17 @@ break if input == "exit"
                     end
                     body = Nokogiri::HTML(open(url_target))
                     puts "\rHere the site informations:\n"
-                    Sniffer.enable!
-                    HTTP.get(url_target)
-                    Sniffer.data[0].to_h
+                    urll = URI("#{url_target}")
+                    respone = Net::HTTP.get_response(urll)
+                    respone['Set-Cookie']            
+                    respone.get_fields('set-cookie') 
+                    respone.to_hash['set-cookie']    
+                    print respone.to_hash.inspect
+
                     inline = body.xpath('//script[not(@src)]')
                     inline.each do |script|
                         puts "-"*50, script.text
-                    end               
+                    end
                 rescue Errno::ENOENT
                     puts "\rselect a valid target! (example https://pornhub.com)"
                 end
@@ -117,17 +107,19 @@ break if input == "exit"
             puts "\rtarget selected: #{url}"
             amogus.get(url).links.each do |link|
                 puts "correlated links at #{url} = #{link.uri}"
-            end  
+            end
         end
         print owo
     end
     if input == "portchecker"
-        puts "\rtype an ip to check the ports open on:"        
+        puts "\rtype an ip to check the ports open on:"
+        puts "(example: www.google.com)"
         def scan_port
             port_input = gets.chomp
             print port_input
-            ports = [15,21,22,23,25,26,80,110,143,200,443,587,993,995,1000,
-                    2077,2078,2082,2083,2086,2087,2095,2096,3080,3306,3389       #most used ports
+            ports = [15,21,22,25,26,80,110,143,200,443,587,
+                    993,995,1000,2077,2078,2082,2083,2086,      #most used ports
+                    2087,2095,2096,3080,3306
                 ]
             for numbers in ports
                 socket = Socket.new(:INET, :STREAM)
@@ -137,11 +129,11 @@ break if input == "exit"
                 rescue Errno::EINPROGRESS
                 end
                 time = 1
-                sockets = Socket.select(nil, [socket], nil, time) 
+                sockets = Socket.select(nil, [socket], nil, time)
                 if sockets
-                    puts "Port #{numbers} is open"                                          
-                else  
-                    puts "Port #{numbers} is closed"
+                    puts "\rPort #{numbers} is open"
+                else
+                    puts "\rPort #{numbers} is closed"
                 end
             end
         end
@@ -190,14 +182,13 @@ break if input == "exit"
             rescue Errno::ENOENT
                 puts "\rERROR: Select a valid wordlist"
             rescue HTTP::ConnectionError
-                puts "\rERROR: Select a valid link"    
+                puts "\rERROR: Select a valid link"
             end
         end
         print fuzzer
     end
     if input == "-r"
-        Sniffer.reset!
-        system('clear') 
+        system('clear')
         puts "Resetted!"
         puts "\n"
     end
@@ -208,7 +199,7 @@ break if input == "exit"
         commands = ['local', 'dns', '-r', 'help', 'linkshunt','fingerprint','portchecker',"fuzzer"]
     else input != commands
         puts "\r"
-    end                                  
+    end
 system(input)
 print prompt
 end

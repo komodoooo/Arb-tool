@@ -27,8 +27,6 @@ help         => help you :kek:
 
 Only avaible on Linux, |Tested on a linux subsystem.|
 
-**DISCLAIMER: if the localhost is no detectable, arb give you an error.**
-
 # Credits
 By **me**
 

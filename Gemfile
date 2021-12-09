@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
-gem 'http', '~> 5.0'
 gem 'net-http', '~> 0.2.0'
 gem 'open-uri', '~> 0.2.0'
 gem 'nokogiri', '~> 1.11', '>= 1.11.7'

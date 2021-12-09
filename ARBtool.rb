@@ -1,5 +1,4 @@
 #!usr/bin/env ruby
-require 'http'
 require 'net/http'
 require 'mechanize'
 require 'open-uri'
@@ -26,7 +25,7 @@ def logo
                  \_|_/        By LoJacopS
 '''
     print banner
-    puts "v1.6.8"
+    puts "v1.7.2"
     puts "\n"
     print Time.now
     puts "\n"
@@ -41,18 +40,20 @@ while (input = gets.chomp)
 break if input == "exit"
     print prompt && input
     if input == "headers"
-        begin
-            puts "\rTarget:"
-            sessoinput = gets.chomp
-            urii = URI("#{sessoinput}")
-            response = Net::HTTP.get_response(urii)
-            response['Set-Cookie']                      #get the sexy headers
-            response.get_fields('set-cookie') 
-            response.to_hash['set-cookie']    
-            puts "Headers:\n #{response.to_hash.inspect}"
-        rescue Errno::ENOENT
-            puts "\rselect a valid target! (example https://pornhub.com)"
-        end
+        Thread.new{
+            begin
+                puts "\rTarget:"
+                sessoinput = gets.chomp
+                urii = URI("#{sessoinput}")
+                response = Net::HTTP.get_response(urii)
+                response['Set-Cookie']                      #get the sexy headers
+                response.get_fields('set-cookie') 
+                response.to_hash['set-cookie']    
+                puts "Headers:\n #{response.to_hash.inspect}"
+            rescue Errno::ENOENT
+                puts "\rselect a valid target! (example https://pornhub.com)"
+            end
+        }.join
     end
     if input == "site"
         puts "\rSelect a valid target:"
@@ -83,11 +84,13 @@ break if input == "exit"
                 end
             end
         end
-        crawling = Spidercute.new
-        crawling.target do |output|
-            print output
-            puts "\n"
-        end
+        Thread.new{
+            crawling = Spidercute.new
+            crawling.target do |output|
+                print output
+                puts "\n"
+            end
+        }.join
     end
     if input == "fingerprint"
         puts "\rinsert a site target:"
@@ -100,14 +103,16 @@ break if input == "exit"
     end
     if input == "linkshunt"
         def owo
-            amogus = Mechanize.new
-            puts "\rinsert a link:"
-            url = gets.chomp
-            print url
-            puts "\rtarget selected: #{url}"
-            amogus.get(url).links.each do |link|
-                puts "correlated links at #{url} = #{link.uri}"
-            end
+            Thread.new{
+                amogus = Mechanize.new
+                puts "\rinsert a link:"
+                url = gets.chomp
+                print url
+                puts "\rtarget selected: #{url}"
+                amogus.get(url).links.each do |link|
+                    puts "correlated links at #{url} = #{link.uri}"
+                end
+            }.join
         end
         print owo
     end
@@ -157,31 +162,33 @@ break if input == "exit"
     if input == "fuzzer"
         def fuzzer
             begin
-                puts "\rlink: "
-                fuzz_option = gets.chomp
-                print fuzz_option
-                puts "\rselect a wordlist:"
-                wordlist_option = gets.chomp
-                print wordlist_option
-                wordlist = File.open(wordlist_option)
-                ohyes = wordlist.map {|x| x.chomp }
-                ohyes.each do |dir|
-                    uri = "#{fuzz_option}/#{dir}/"
-                    request = HTTP.get(uri)
-                    print request.code
-                    if request.code == 200
-                        puts "\rdirectory open! '#{dir}'"
-                        log = File.new("Valid-dir.log", 'a')
-                        log.write(dir+"\n")
-                        log.close
-                        puts "saved on file Valid-dir.log!"
-                    elsif request.code == 404
-                        puts "\nscanning..."                       #directory closed
+                Thread.new{
+                    puts "\rlink: "
+                    fuzz_option = gets.chomp
+                    print fuzz_option
+                    puts "\rselect a wordlist:"
+                    wordlist_option = gets.chomp
+                    print wordlist_option
+                    wordlist = File.open(wordlist_option)
+                    ohyes = wordlist.map {|x| x.chomp }
+                    ohyes.each do |dir|
+                        uriiii = URI("#{fuzz_option}/#{dir}/")
+                        requestt = Net::HTTP.get_response(uriiii)
+                        print requestt.code
+                        if requestt.code == '200'
+                            puts "\rdirectory open! '#{dir}'"
+                            log = File.new("Valid-dir.log", 'a')
+                            log.write(dir+"\n")
+                            log.close
+                            puts "saved on file Valid-dir.log!"
+                        elsif requestt.code == '404'
+                            puts "\nscanning..."                       #directory closed
+                        end
                     end
-                end
+                }.join
             rescue Errno::ENOENT
                 puts "\rERROR: Select a valid wordlist"
-            rescue HTTP::ConnectionError
+            rescue Net::OpenTimeout
                 puts "\rERROR: Select a valid link"
             end
         end
@@ -196,7 +203,7 @@ break if input == "exit"
         print help
     elsif input == "banner"
         print logo
-        commands = ['local', 'dns', '-r', 'help', 'linkshunt','fingerprint','portchecker',"fuzzer"]
+        commands = ['headers', 'site', '-r', 'help', 'linkshunt','fingerprint','portchecker',"fuzzer"]
     else input != commands
         puts "\r"
     end

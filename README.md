@@ -22,11 +22,15 @@ help         => help you :kek:
 # Dependencies:
 
 - The ruby programming language
-- The gems 'http', 'sniffer' 'mechanize', 'open-uri' (and socket & net-http system gems)
+- The gems 'mechanize', 'open-uri' (and socket & net-http system gems)
 - The framework nokogiri is already integrated into sniffer & mechanize gems
 
 Only avaible on Linux, |Tested on a linux subsystem.|
 
+# New featuers
+1) More compatibiliy with the gems
+2) More faster with Threads
+3) Version upgrade (1.6.8 to 1.7.2)
+
 # Credits
 By **me**
-

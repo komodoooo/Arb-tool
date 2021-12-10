@@ -46,7 +46,7 @@ break if input == "exit"
                 sessoinput = gets.chomp
                 urii = URI("#{sessoinput}")
                 response = Net::HTTP.get_response(urii)
-                response['Set-Cookie']                      #get the sexy headers
+                response['set-cookie']                      #get the sexy headers
                 response.get_fields('set-cookie') 
                 response.to_hash['set-cookie']    
                 puts "Headers:\n #{response.to_hash.inspect}"
@@ -70,7 +70,7 @@ break if input == "exit"
                     puts "\rHere the site informations:\n"
                     urll = URI("#{url_target}")
                     respone = Net::HTTP.get_response(urll)
-                    respone['Set-Cookie']            
+                    respone['set-sookie']            
                     respone.get_fields('set-cookie') 
                     respone.to_hash['set-cookie']    
                     print respone.to_hash.inspect

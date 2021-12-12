@@ -45,10 +45,8 @@ break if input == "exit"
                 puts "\rTarget:"
                 sessoinput = gets.chomp
                 urii = URI("#{sessoinput}")
-                response = Net::HTTP.get_response(urii)
-                response['set-cookie']                      #get the sexy headers
-                response.get_fields('set-cookie') 
-                response.to_hash['set-cookie']    
+                response = Net::HTTP.get_response(urii) 
+                response.to_hash['set-cookie']                      #get the sexy headers
                 puts "Headers:\n #{response.to_hash.inspect}"
             rescue Errno::ENOENT
                 puts "\rselect a valid target! (example https://pornhub.com)"
@@ -61,7 +59,6 @@ break if input == "exit"
             def target
                 begin
                     url_target = gets.chomp
-                    puts url_target
                     if url_target == nil
                         puts "Not a valid target"
                         return
@@ -69,11 +66,11 @@ break if input == "exit"
                     body = Nokogiri::HTML(open(url_target))
                     puts "\rHere the site informations:\n"
                     urll = URI("#{url_target}")
-                    respone = Net::HTTP.get_response(urll)
-                    respone['set-sookie']            
-                    respone.get_fields('set-cookie') 
+                    respone = Net::HTTP.get_response(urll) 
                     respone.to_hash['set-cookie']    
                     print respone.to_hash.inspect
+                    puts "\nhtml body:"
+                    puts respone.body
 
                     inline = body.xpath('//script[not(@src)]')
                     inline.each do |script|
@@ -93,13 +90,16 @@ break if input == "exit"
         }.join
     end
     if input == "fingerprint"
-        puts "\rinsert a site target:"
-        html_code = gets.chomp
-        print html_code
-        puts "\rhere the html code\n"
-        capture = open(html_code)
-        work = Nokogiri::HTML(capture)  #sorry for the variables, but to make it work, just the function is not enough
-        print work
+        begin
+            puts "\rinsert a site target:"
+            html_code = gets.chomp
+            puts "\rhere the html code\n"
+            capture = open(html_code)
+            work = Nokogiri::HTML(capture)  #sorry for the variables, but to make it work, just the function is not enough
+            print work
+        rescue Errno::ENOENT
+            puts "\rselect a valid target! (example https://pornhub.com)"
+        end
     end
     if input == "linkshunt"
         def owo
@@ -107,7 +107,6 @@ break if input == "exit"
                 amogus = Mechanize.new
                 puts "\rinsert a link:"
                 url = gets.chomp
-                print url
                 puts "\rtarget selected: #{url}"
                 amogus.get(url).links.each do |link|
                     puts "correlated links at #{url} = #{link.uri}"
@@ -121,7 +120,6 @@ break if input == "exit"
         puts "(example: www.google.com)"
         def scan_port
             port_input = gets.chomp
-            print port_input
             ports = [15,21,22,25,26,80,110,143,200,443,587,
                     993,995,1000,2077,2078,2082,2083,2086,      #most used ports
                     2087,2095,2096,3080,3306
@@ -149,7 +147,6 @@ break if input == "exit"
             begin
                 puts "\nsite with xml:"
                 version = gets.chomp
-                print version
                 e = open(version)
                 puts "\rHere the xml version:"
                 Nokogiri::XML(e)
@@ -165,7 +162,6 @@ break if input == "exit"
                 Thread.new{
                     puts "\rlink: "
                     fuzz_option = gets.chomp
-                    print fuzz_option
                     puts "\rselect a wordlist:"
                     wordlist_option = gets.chomp
                     print wordlist_option

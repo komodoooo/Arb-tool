@@ -7,7 +7,12 @@ echo """
  █▀█ █▀▄ █▄█ tool |--0--|   
                    \_|_/ Setup
 """
-gem install bundle
-bundle install
-chmod +x ARBtool.rb
-ruby ARBtool.rb
+{
+    gem install bundle
+    bundle install
+    chmod +x ARBtool.rb
+    ruby ARBtool.rb
+} || {
+    echo "ERROR"
+    echo "Are you root?"
+}

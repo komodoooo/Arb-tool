@@ -3,9 +3,11 @@ require 'net/http'
 require 'mechanize'
 require 'open-uri'
 require 'socket'
+require 'colorize'
+
 
 def help
-    puts "\rARB Sitescreener commands:"
+    puts "\rARB commands:"
     puts "headers      => returns the headers of a site"
     puts "site         => parse an user target (website)"
     puts "fingerprint  => capture the html body of a site"
@@ -20,21 +22,20 @@ end
 def logo
     banner = '''
                   ___
- ▄▀█ █▀█ █▄▄     / | \
- █▀█ █▀▄ █▄█    |--0--|
+ ▄▀█ █▀█ █▄▄     / | \
+ █▀█ █▀▄ █▄█    |--0--|
                  \_|_/        By LoJacopS
-'''
+'''.cyan[..-5]
     print banner
-    puts "v1.7.2"
+    puts "v1.7.3"
     puts "\n"
     print Time.now
     puts "\n"
 end
 print logo
+puts "Welcome to arb!"
 
-puts "Welcome to arb! The site analyzer!"
-
-prompt = "\rArb>"
+prompt = "\rArb>".green[..-5]
 
 while (input = gets.chomp)
 break if input == "exit"
@@ -48,8 +49,8 @@ break if input == "exit"
                 response = Net::HTTP.get_response(urii) 
                 response.to_hash['set-cookie']                      #get the sexy headers
                 puts "Headers:\n #{response.to_hash.inspect}"
-            rescue Errno::ENOENT
-                puts "\rselect a valid target! (example https://pornhub.com)"
+            rescue Errno::ENOENT, Errno::ECONNREFUSED
+                puts "\rselect a valid target! (example https://pornhub.com)".red
             end
         }.join
     end
@@ -76,8 +77,8 @@ break if input == "exit"
                     inline.each do |script|
                         puts "-"*50, script.text
                     end
-                rescue Errno::ENOENT
-                    puts "\rselect a valid target! (example https://pornhub.com)"
+                rescue Errno::ENOENT, Errno::ECONNREFUSED
+                    puts "\rselect a valid target! (example https://pornhub.com)".red
                 end
             end
         end
@@ -97,8 +98,8 @@ break if input == "exit"
             capture = open(html_code)
             work = Nokogiri::HTML(capture)  #sorry for the variables, but to make it work, just the function is not enough
             print work
-        rescue Errno::ENOENT
-            puts "\rselect a valid target! (example https://pornhub.com)"
+        rescue Errno::ENOENT, Errno::ECONNREFUSED
+            puts "\rselect a valid target! (example https://pornhub.com)".red
         end
     end
     if input == "linkshunt"
@@ -150,8 +151,8 @@ break if input == "exit"
                 e = open(version)
                 puts "\rHere the xml version:"
                 Nokogiri::XML(e)
-            rescue Errno::ENOENT
-                puts "\rselect a valid target! (example https://google.com)"
+            rescue Errno::ENOENT, Errno::ECONNREFUSED
+                puts "\rselect a valid target! (example https://google.com)".red
             end
         end
         print xml_v
@@ -182,17 +183,17 @@ break if input == "exit"
                         end
                     end
                 }.join
-            rescue Errno::ENOENT
-                puts "\rERROR: Select a valid wordlist"
+            rescue Errno::ENOENT, Errno::ECONNREFUSED
+                puts "\rERROR: Select a valid wordlist".red
             rescue Net::OpenTimeout
-                puts "\rERROR: Select a valid link"
+                puts "\rERROR: Select a valid link".red
             end
         end
         print fuzzer
     end
     if input == "-r"
         system('clear')
-        puts "Resetted!"
+        puts "Resetted!".yellow
         puts "\n"
     end
     if input == "help"

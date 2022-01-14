@@ -11,7 +11,7 @@ headers      => returns the headers of a site
 site         => parse an user target (website)
 fingerprint  => capture the html code of a site
 linkshunt    => view the correlated links in a site
-portchecker  => check the open port on a target ip
+portscan     => check the open port on a target ip
 xml-version  => show the xml version of a site
 fuzzer       => do the directory fuzzing in a site
 -r           => reset & clear display
@@ -31,7 +31,7 @@ Only avaible on Linux, |Tested on a linux subsystem.|
 2) More faster with Threads
 3) Colors, colors!
 
-Version upgrade (1.6.8 to 1.7.3)
+Version upgrade (1.7.3 to 1.7.4)
 
 
 # Credits

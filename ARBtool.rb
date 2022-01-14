@@ -12,7 +12,7 @@ def help
     puts "site         => parse an user target (website)"
     puts "fingerprint  => capture the html body of a site"
     puts "linkshunt    => view the correlated links in a site"
-    puts "portchecker  => check the open port on a target ip"
+    puts "portscan     => check the open port on a target ip"
     puts "xml-version  => show the xml version of a site"
     puts "fuzzer       => do the directory fuzzing in a site"
     puts "-r           => reset & clear display"
@@ -27,7 +27,7 @@ def logo
                  \_|_/        By LoJacopS
 '''.cyan[..-5]
     print banner
-    puts "v1.7.3"
+    puts "v1.7.4"
     puts "\n"
     print Time.now
     puts "\n"
@@ -55,15 +55,11 @@ break if input == "exit"
         }.join
     end
     if input == "site"
-        puts "\rSelect a valid target:"
         class Spidercute
             def target
-                begin
-                    url_target = gets.chomp
-                    if url_target == nil
-                        puts "Not a valid target"
-                        return
-                    end
+                puts "\rSelect a valid target:"
+                url_target = gets.chomp
+                begin   
                     body = Nokogiri::HTML(open(url_target))
                     puts "\rHere the site informations:\n"
                     urll = URI("#{url_target}")
@@ -116,15 +112,17 @@ break if input == "exit"
         end
         print owo
     end
-    if input == "portchecker"
+    if input == "portscan"
         puts "\rtype an ip to check the ports open on:"
         puts "(example: www.google.com)"
         def scan_port
             port_input = gets.chomp
-            ports = [15,21,22,25,26,80,110,143,200,443,587,
+            ports = [15,21,22,23,25,26,50,51,53,67,58,69,80,110,119,123,
+                    135,139,143,161,162,200,389,443,587,989,990,
                     993,995,1000,2077,2078,2082,2083,2086,      #most used ports
-                    2087,2095,2096,3080,3306
-                ]
+                    2087,2095,2096,3080,3306,3389
+                ]      
+            #ports = Range.new(1,5000)      Ranges? Nah.
             for numbers in ports
                 socket = Socket.new(:INET, :STREAM)
                 remote_addr = Socket.sockaddr_in(numbers, port_input)
@@ -144,10 +142,8 @@ break if input == "exit"
         print scan_port
     end
     if input == "xml-version"
-        def xml_v
+        def xml_v(version)
             begin
-                puts "\nsite with xml:"
-                version = gets.chomp
                 e = open(version)
                 puts "\rHere the xml version:"
                 Nokogiri::XML(e)
@@ -155,31 +151,27 @@ break if input == "exit"
                 puts "\rselect a valid target! (example https://google.com)".red
             end
         end
-        print xml_v
+        puts "\nsite with xml:"
+        versionn = gets.chomp
+        print xml_v(versionn)
     end
     if input == "fuzzer"
-        def fuzzer
+        def fuzzer(link, wordlist)
             begin
                 Thread.new{
-                    puts "\rlink: "
-                    fuzz_option = gets.chomp
-                    puts "\rselect a wordlist:"
-                    wordlist_option = gets.chomp
-                    print wordlist_option
-                    wordlist = File.open(wordlist_option)
+                    wordlist = File.open(wordlist)
                     ohyes = wordlist.map {|x| x.chomp }
                     ohyes.each do |dir|
-                        uriiii = URI("#{fuzz_option}/#{dir}/")
+                        uriiii = URI("#{link}/#{dir}/")
                         requestt = Net::HTTP.get_response(uriiii)
-                        print requestt.code
                         if requestt.code == '200'
                             puts "\rdirectory open! '#{dir}'"
                             log = File.new("Valid-dir.log", 'a')
                             log.write(dir+"\n")
                             log.close
                             puts "saved on file Valid-dir.log!"
-                        elsif requestt.code == '404'
-                            puts "\nscanning..."                       #directory closed
+                        else
+                            puts "\nscanning...#{requestt.code}"                    #directory closed
                         end
                     end
                 }.join
@@ -189,7 +181,11 @@ break if input == "exit"
                 puts "\rERROR: Select a valid link".red
             end
         end
-        print fuzzer
+        puts "\rlink: "
+        fuzz_option = gets.chomp
+        puts "\rselect a wordlist:"
+        wordlist_option = gets.chomp
+        print fuzzer(fuzz_option, wordlist_option)
     end
     if input == "-r"
         system('clear')
@@ -200,7 +196,7 @@ break if input == "exit"
         print help
     elsif input == "banner"
         print logo
-        commands = ['headers', 'site', '-r', 'help', 'linkshunt','fingerprint','portchecker',"fuzzer"]
+        commands = ['headers', 'site', '-r', 'help', 'linkshunt','fingerprint','portscan',"fuzzer"]
     else input != commands
         puts "\r"
     end

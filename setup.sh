@@ -7,19 +7,24 @@ echo """
  █▀█ █▀▄ █▄█ tool |--0--|   
                    \_|_/ Setup
 """
-{
-    gem install bundle
-    bundle install
-    chmod +x ARBtool.rb
-    ruby ARBtool.rb
-} || {
-    echo """
+function main {
+    {
+        gem install bundle
+        apt-get install ruby-bundler
+        bundle install
+        chmod +x ARBtool.rb
+        ruby ARBtool.rb
+    } || {
+        FAIL="""
 ERROR :/
 Something wrong uhm...
-Are you root?
-Are you a sexman?
-Or...GET FUCKED BY MARCO06! (Mozzie and 0xjin collab)
-DDOSSING LOCALHOST...
+
+\nCommon problems:
+\nAre you root?
+\nHave you installed ruby and rubygems?
+\nIs this script running on the same path of the repo?
 """
-    :(){:|: &};:
+        echo -e $FAIL
+    }
 }
+main

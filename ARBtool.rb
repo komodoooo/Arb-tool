@@ -7,16 +7,17 @@ require 'colorize'
 
 
 def help
-    puts "\rARB commands:"
-    puts "headers      => returns the headers of a site"
-    puts "site         => parse an user target (website)"
-    puts "fingerprint  => capture the html body of a site"
-    puts "linkshunt    => view the correlated links in a site"
-    puts "portscan     => check the open port on a target ip"
-    puts "xml-version  => show the xml version of a site"
-    puts "fuzzer       => do the directory fuzzing in a site"
-    puts "-r           => reset & clear display"
-    puts "help         => help you :kek:\r"
+    puts """\r
+ARB commands:
+headers      => returns the headers of a site
+lookup       => parse an user target (ip/domain)
+fingerprint  => capture the html code of a site
+linkshunt    => view the correlated links in a site
+portscan  => check the open port on a target (ip/domain)
+xml-version  => show the xml version of a site
+fuzzer       => do the directory fuzzing in a site
+-r           => reset & clear display
+help         => help you :kek:\r""".cyan
 end
 
 def logo
@@ -27,11 +28,22 @@ def logo
                  \_|_/        By LoJacopS
 '''.cyan[..-5]
     print banner
-    puts "v1.7.4"
+    puts "v1.7.5"
     puts "\n"
     print Time.now
     puts "\n"
 end
+
+=begin
+
+Komodo, 5/02/2022
+
+Hi reader of this code, i'm sorry for eventually
+shitty codes in arb. It was my first ruby project in 2020...
+Right now, I update it in randomly moments
+
+=end
+
 print logo
 puts "Welcome to arb!"
 
@@ -48,33 +60,25 @@ break if input == "exit"
                 urii = URI("#{sessoinput}")
                 response = Net::HTTP.get_response(urii) 
                 response.to_hash['set-cookie']                      #get the sexy headers
-                puts "Headers:\n #{response.to_hash.inspect}"
+                puts "Headers:\n #{response.to_hash.inspect}".yellow
             rescue Errno::ENOENT, Errno::ECONNREFUSED
                 puts "\rselect a valid target! (example https://pornhub.com)".red
             end
         }.join
     end
-    if input == "site"
+    if input == "lookup"
         class Spidercute
             def target
-                puts "\rSelect a valid target:"
+                puts "\rRemember to select a valid target! (example www.twitter.com)".red
+                puts "\rSelect a valid target:".green
                 url_target = gets.chomp
                 begin   
-                    body = Nokogiri::HTML(open(url_target))
-                    puts "\rHere the site informations:\n"
-                    urll = URI("#{url_target}")
-                    respone = Net::HTTP.get_response(urll) 
-                    respone.to_hash['set-cookie']    
-                    print respone.to_hash.inspect
-                    puts "\nhtml body:"
-                    puts respone.body
-
-                    inline = body.xpath('//script[not(@src)]')
-                    inline.each do |script|
-                        puts "-"*50, script.text
-                    end
+                    urrah = URI("https://ipwhois.app/json/#{url_target}")
+                    mlml = Net::HTTP.get(urrah)
+                    puts "\n"
+                    puts mlml.gsub(",", ",\n").yellow
                 rescue Errno::ENOENT, Errno::ECONNREFUSED
-                    puts "\rselect a valid target! (example https://pornhub.com)".red
+                    puts "\rselect a valid target! (example www.twitter.com)".red
                 end
             end
         end
@@ -93,7 +97,7 @@ break if input == "exit"
             puts "\rhere the html code\n"
             capture = open(html_code)
             work = Nokogiri::HTML(capture)  #sorry for the variables, but to make it work, just the function is not enough
-            print work
+            print "#{work}".yellow
         rescue Errno::ENOENT, Errno::ECONNREFUSED
             puts "\rselect a valid target! (example https://pornhub.com)".red
         end
@@ -101,12 +105,17 @@ break if input == "exit"
     if input == "linkshunt"
         def owo
             Thread.new{
-                amogus = Mechanize.new
-                puts "\rinsert a link:"
-                url = gets.chomp
-                puts "\rtarget selected: #{url}"
-                amogus.get(url).links.each do |link|
-                    puts "correlated links at #{url} = #{link.uri}"
+                begin
+                    amogus = Mechanize.new
+                    puts "\rinsert a link:"
+                    url = gets.chomp
+                    puts "\rtarget selected: #{url}"
+                    amogus.get(url).links.each do |link|
+                        puts "correlated links at #{url} = #{link.uri}".yellow
+                    end
+                rescue => eeeeh
+                    puts "ERROR\n#{eeeeh}".red
+                    puts ""
                 end
             }.join
         end
@@ -123,20 +132,25 @@ break if input == "exit"
                     2087,2095,2096,3080,3306,3389
                 ]      
             #ports = Range.new(1,5000)      Ranges? Nah.
-            for numbers in ports
-                socket = Socket.new(:INET, :STREAM)
-                remote_addr = Socket.sockaddr_in(numbers, port_input)
-                begin
-                    socket.connect_nonblock(remote_addr)
-                rescue Errno::EINPROGRESS
+            begin
+                for numbers in ports
+                    socket = Socket.new(:INET, :STREAM)
+                    remote_addr = Socket.sockaddr_in(numbers, port_input)
+                    begin
+                        socket.connect_nonblock(remote_addr)
+                    rescue Errno::EINPROGRESS
+                    end
+                   time = 1
+                    sockets = Socket.select(nil, [socket], nil, time)
+                    if sockets
+                        puts "\rPort #{numbers} is open".yellow
+                    else
+                        puts "\rPort #{numbers} is closed".red
+                    end
                 end
-                time = 1
-                sockets = Socket.select(nil, [socket], nil, time)
-                if sockets
-                    puts "\rPort #{numbers} is open"
-                else
-                    puts "\rPort #{numbers} is closed"
-                end
+            rescue SocketError => sock_err
+                puts "ERROR\n#{sock_err}".red
+                puts ""
             end
         end
         print scan_port
@@ -146,9 +160,12 @@ break if input == "exit"
             begin
                 e = open(version)
                 puts "\rHere the xml version:"
-                Nokogiri::XML(e)
+                print "#{Nokogiri::XML(e)}".yellow
             rescue Errno::ENOENT, Errno::ECONNREFUSED
                 puts "\rselect a valid target! (example https://google.com)".red
+            rescue => eeh
+                puts "ERROR:\n#{eeh}".red
+                puts ""
             end
         end
         puts "\nsite with xml:"
@@ -165,13 +182,13 @@ break if input == "exit"
                         uriiii = URI("#{link}/#{dir}/")
                         requestt = Net::HTTP.get_response(uriiii)
                         if requestt.code == '200'
-                            puts "\rdirectory open! '#{dir}'"
+                            puts "\rdirectory open! '#{dir}'".yellow
                             log = File.new("Valid-dir.log", 'a')
                             log.write(dir+"\n")
                             log.close
                             puts "saved on file Valid-dir.log!"
                         else
-                            puts "\nscanning...#{requestt.code}"                    #directory closed
+                            puts "\nscanning...#{requestt.code}".cyan                    #directory closed
                         end
                     end
                 }.join
@@ -179,24 +196,27 @@ break if input == "exit"
                 puts "\rERROR: Select a valid wordlist".red
             rescue Net::OpenTimeout
                 puts "\rERROR: Select a valid link".red
+            rescue => eeeh
+                puts "ERROR\n#{eeeh}".red
+                puts ""
             end
         end
         puts "\rlink: "
         fuzz_option = gets.chomp
-        puts "\rselect a wordlist:"
+        puts "\rselect a wordlist: (wordlist.txt for use the default wordlist)"
         wordlist_option = gets.chomp
         print fuzzer(fuzz_option, wordlist_option)
     end
     if input == "-r"
         system('clear')
-        puts "Resetted!".yellow
+        puts "Resetted!".cyan
         puts "\n"
     end
     if input == "help"
         print help
     elsif input == "banner"
         print logo
-        commands = ['headers', 'site', '-r', 'help', 'linkshunt','fingerprint','portscan',"fuzzer"]
+        commands = ['headers', 'lookup', '-r', 'help', 'linkshunt','fingerprint','portscan',"fuzzer"]
     else input != commands
         puts "\r"
     end

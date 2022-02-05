@@ -8,10 +8,10 @@ ARB Sitescreener commands:
 
 ```
 headers      => returns the headers of a site
-site         => parse an user target (website)
+lookup       => parse an user target (ip/domain)
 fingerprint  => capture the html code of a site
 linkshunt    => view the correlated links in a site
-portscan     => check the open port on a target ip
+portscan  => check the open port on a target (ip/domain)
 xml-version  => show the xml version of a site
 fuzzer       => do the directory fuzzing in a site
 -r           => reset & clear display
@@ -27,11 +27,13 @@ help         => help you :kek:
 Only avaible on Linux, |Tested on a linux subsystem.|
 
 # New featuers
-1) More compatibiliy with the gems
-2) More faster with Threads
-3) Colors, colors!
+1) Added error reports
+2) Restyled the lookup command: now it's work with an API, [this](https://ipwhois.app)
+3) More compatibiliy with the gems
+4) More faster with Threads
+5) Colors, colors!
 
-Version upgrade (1.7.3 to 1.7.4)
+Version upgrade (1.7.4 to 1.7.5)
 
 
 # Credits

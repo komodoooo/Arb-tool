@@ -17,7 +17,7 @@ portscan     => check the open port on a target (ip/domain)
 xml-version  => show the xml version of a site
 fuzzer       => do the directory fuzzing in a site
 -r           => reset & clear display
-help         => help you :kek:\r""".cyan
+help         => help you :kek:\r""".light_magenta
 end
 
 def logo
@@ -60,7 +60,7 @@ break if input == "exit"
                 urii = URI("#{sessoinput}")
                 response = Net::HTTP.get_response(urii) 
                 response.to_hash['set-cookie']                      #get the sexy headers
-                puts "Headers:\n #{response.to_hash.inspect}".yellow
+                puts "Headers:\n #{response.to_hash.inspect.gsub("],","],\n")}".yellow
             rescue Errno::ENOENT, Errno::ECONNREFUSED
                 puts "\rselect a valid target! (example https://pornhub.com)".red
             end

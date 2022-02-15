@@ -61,30 +61,26 @@ break if input == "exit"
                 response = Net::HTTP.get_response(urii) 
                 response.to_hash['set-cookie']                      #get the sexy headers
                 puts "Headers:\n #{response.to_hash.inspect.gsub("],","],\n")}".yellow
-            rescue Errno::ENOENT, Errno::ECONNREFUSED
+            rescue Errno::ENOENT, Errno::ECONNREFUSED, SocketError
                 puts "\rselect a valid target! (example https://pornhub.com)".red
             end
         }.join
     end
     if input == "lookup"
         class Spidercute
-            def target
-                puts "\rRemember to select a valid target! (example www.twitter.com)".red
-                puts "\rSelect a valid target:".green
-                url_target = gets.chomp
-                begin   
-                    urrah = URI("https://ipwhois.app/json/#{url_target}")
-                    mlml = Net::HTTP.get(urrah)
-                    puts "\n"
-                    puts mlml.gsub(",", ",\n").yellow
-                rescue Errno::ENOENT, Errno::ECONNREFUSED
-                    puts "\rselect a valid target! (example www.twitter.com)".red
-                end
+            def target(oscuro)
+                urrah = URI("https://ipwhois.app/json/#{oscuro}")
+                mlml = Net::HTTP.get(urrah)
+                puts "\n"
+                puts mlml.gsub(",", ",\n").yellow
             end
         end
         Thread.new{
-            crawling = Spidercute.new
-            crawling.target do |output|
+            puts "\rRemember to select a valid target! (example www.twitter.com)".red
+            puts "\rSelect a valid target:".green
+            url_target = gets.chomp
+            crawling = Spidercute.new()
+            crawling.target(url_target) do |output|
                 print output
                 puts "\n"
             end

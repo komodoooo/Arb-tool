@@ -76,7 +76,7 @@ break if input == "exit"
             end
         end
         Thread.new{
-            puts "\rRemember to select a valid target! (example www.twitter.com)".red
+            puts "\rRemember to select a valid target! (example www.twitter.com or 104.244.42.1)".red
             puts "\rSelect a valid target:".green
             url_target = gets.chomp
             crawling = Spidercute.new()

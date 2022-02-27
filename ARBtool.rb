@@ -35,13 +35,10 @@ def logo
 end
 
 =begin
-
 Komodo, 5/02/2022
-
 Hi reader of this code, i'm sorry for eventually
 shitty codes in arb. It was my first ruby project in 2020...
 Right now, I update it in randomly moments
-
 =end
 
 print logo
@@ -96,6 +93,8 @@ break if input == "exit"
             print "#{work}".yellow
         rescue Errno::ENOENT, Errno::ECONNREFUSED
             puts "\rselect a valid target! (example https://pornhub.com)".red
+        rescue ArgumentError => ah 
+            puts "\rERROR: #{ah}"
         end
     end
     if input == "linkshunt"

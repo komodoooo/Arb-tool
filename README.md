@@ -21,14 +21,14 @@ help         => help you :kek:
 # Dependencies:
 
 - The ruby programming language and rubygem package manager
-- The gems 'mechanize', 'open-uri', 'colorize' (and socket & net-http system gems)
-- The framework nokogiri is already integrated into the mechanize gem
+- The framework nokogiri
+- The gems "open-uri", "colorize" (and socket & net-http system gems)
 
 Only avaible on Linux, |Tested on a linux subsystem.|
 
 # New featuers
 1) Added error reports
-2) Restyled the lookup command: now it's work with an API, [this](https://ipwhois.app)
+2) Restyled the lookup command: now it's work with an API, [this.](https://ipwhois.app)
 3) More compatibiliy with the gems
 4) More faster with Threads
 5) Colors, colors!

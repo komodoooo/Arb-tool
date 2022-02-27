@@ -10,7 +10,6 @@ echo """
 function main {
     {
         gem install bundle
-        apt-get install ruby-bundler
         bundle install
         chmod +x ARBtool.rb
         ruby ARBtool.rb

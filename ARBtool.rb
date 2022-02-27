@@ -1,6 +1,6 @@
 #!usr/bin/env ruby
 require 'net/http'
-require 'mechanize'
+require 'nokogiri'
 require 'open-uri'
 require 'socket'
 require 'colorize'
@@ -102,12 +102,17 @@ break if input == "exit"
         def owo
             Thread.new{
                 begin
-                    amogus = Mechanize.new
                     puts "\rinsert a link:"
                     url = gets.chomp
                     puts "\rtarget selected: #{url}"
-                    amogus.get(url).links.each do |link|
-                        puts "correlated links at #{url} = #{link.uri}".yellow
+                    doc = Nokogiri::HTML(open(url))
+                    element = doc.at_xpath("//a/@href")
+                    element.map{|amogus| amogus.value}
+                    nodeset = doc.css('a[href]')
+                    yay = nodeset.map {|element| element["href"]}
+                    puts "\nCorrelateds link at #{url}:\n".yellow
+                    yay.each do |link|
+                        puts "\r#{link}".yellow
                     end
                 rescue => eeeeh
                     puts "ERROR\n#{eeeeh}".red

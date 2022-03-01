@@ -94,7 +94,7 @@ break if input == "exit"
         rescue Errno::ENOENT, Errno::ECONNREFUSED
             puts "\rselect a valid target! (example https://pornhub.com)".red
         rescue ArgumentError => ah 
-            puts "\rERROR: #{ah}"
+            puts "\rERROR: #{ah}".red
         end
     end
     if input == "linkshunt"

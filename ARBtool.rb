@@ -155,22 +155,24 @@ break if input == "exit"
         end
         print scan_port
     end
-    if input == "xml-version"
-        def xml_v(version)
+    if input == "xml-parser"
+        def sus
             begin
-                e = open(version)
-                puts "\rHere the xml version:"
-                print "#{Nokogiri::XML(e)}".yellow
-            rescue Errno::ENOENT, Errno::ECONNREFUSED
-                puts "\rselect a valid target! (example https://google.com)".red
-            rescue => eeh
-                puts "ERROR:\n#{eeh}".red
-                puts ""
+                puts "\rSite with xml:  "
+                xmlml = gets.chomp    
+                ehm = Nokogiri::XML(open(xmlml)) do |config|  
+                    puts "#{config.strict.noblanks}".yellow[..-5]
+                    puts "All saved in the file document.xml!"
+                end
+                print ehm
+                document = File.new("document.xml", 'a')
+                document.write(ehm)
+                document.close()
+            rescue Errno::ENOENT, Errno::ECONNREFUSED, Nokogiri::XML::SyntaxError, URI::InvalidURIError
+                puts "\rselect a valid target! (example https://google.com/sitemap.xml)"
             end
         end
-        puts "\nsite with xml:"
-        versionn = gets.chomp
-        print xml_v(versionn)
+        print sus
     end
     if input == "fuzzer"
         def fuzzer(link, wordlist)
@@ -182,10 +184,10 @@ break if input == "exit"
                         uriiii = URI("#{link}/#{dir}/")
                         requestt = Net::HTTP.get_response(uriiii)
                         if requestt.code == '200'
-                            puts "\rdirectory open! '#{dir}'".yellow
+                            puts "\ndirectory open! '#{dir}'".yellow
                             log = File.new("Valid-dir.log", 'a')
                             log.write(dir+"\n")
-                            log.close
+                            log.close()
                             puts "saved on file Valid-dir.log!"
                         else
                             puts "\nscanning...#{requestt.code}".cyan                    #directory closed
@@ -208,7 +210,7 @@ break if input == "exit"
         print fuzzer(fuzz_option, wordlist_option)
     end
     if input == "-r"
-        system('clear')
+        system('clear||cls')
         puts "Resetted!".cyan
         puts "\n"
     end
@@ -216,10 +218,10 @@ break if input == "exit"
         print help
     elsif input == "banner"
         print logo
-        commands = ['headers', 'lookup', '-r', 'help', 'linkshunt','fingerprint','portscan',"fuzzer"]
+        commands = ['headers', 'lookup', '-r', 'help', 'linkshunt','fingerprint','portscan',"fuzzer", "xml-parser"]
     else input != commands
         puts "\r"
     end
 system(input)
 print prompt
-end
+end 

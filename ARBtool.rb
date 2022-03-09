@@ -169,7 +169,7 @@ break if input == "exit"
                 document.write(ehm)
                 document.close()
             rescue Errno::ENOENT, Errno::ECONNREFUSED, Nokogiri::XML::SyntaxError, URI::InvalidURIError
-                puts "\rselect a valid target! (example https://google.com/sitemap.xml)"
+                puts "\rselect a valid target! (example https://google.com/sitemap.xml)".red
             end
         end
         print sus

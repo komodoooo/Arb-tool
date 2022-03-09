@@ -10,11 +10,11 @@ def help
     puts """\r
 ARB commands:
 headers      => returns the headers of a site
-lookup       => parse an user target (ip/domain)
+lookup       => show infos of an user target (ip/domain)
 fingerprint  => capture the html code of a site
 linkshunt    => view the correlated links in a site
 portscan     => check the open port on a target (ip/domain)
-xml-version  => show the xml version of a site
+xml-parser   => parse an xml document of a site
 fuzzer       => do the directory fuzzing in a site
 -r           => reset & clear display
 help         => help you :kek:\r""".light_magenta

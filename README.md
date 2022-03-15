@@ -7,11 +7,12 @@ It will give you the following output:
 ARB Sitescreener commands:
 
 ```
-headers      => returns the headers of a site
 lookup       => show infos of an user target (ip/domain)
+portscan     => check the open port on a target (ip/domain)
+ssl          => check the ssl certificate (ip/domain)
+headers      => returns the headers of a site
 fingerprint  => capture the html code of a site
 linkshunt    => view the correlated links in a site
-portscan     => check the open port on a target (ip/domain)
 xml-parser   => parse an xml document of a site
 fuzzer       => do the directory fuzzing in a site
 -r           => reset & clear display
@@ -33,7 +34,7 @@ Only avaible on Linux, |Tested on a linux subsystem.|
 4) More faster with Threads
 5) Colors, colors!
 
-Version upgrade (1.7.4 to 1.7.5)
+Version upgrade (1.7.5 to 1.8.2)
 
 
 # Credits

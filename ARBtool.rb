@@ -9,11 +9,12 @@ require 'colorize'
 def help
     puts """\r
 ARB commands:
-headers      => returns the headers of a site
 lookup       => show infos of an user target (ip/domain)
+portscan     => check the open port on a target (ip/domain)
+ssl          => check the ssl certificate (ip/domain)
+headers      => returns the headers of a site
 fingerprint  => capture the html code of a site
 linkshunt    => view the correlated links in a site
-portscan     => check the open port on a target (ip/domain)
 xml-parser   => parse an xml document of a site
 fuzzer       => do the directory fuzzing in a site
 -r           => reset & clear display
@@ -28,8 +29,7 @@ def logo
                  \_|_/        By LoJacopS
 '''.cyan[..-5]
     print banner
-    puts "v1.7.5"
-    puts "\n"
+    puts "v1.8.2\n"
     print Time.now
     puts "\n"
 end
@@ -86,11 +86,10 @@ break if input == "exit"
     if input == "fingerprint"
         begin
             puts "\rinsert a site target:"
-            html_code = gets.chomp
+            targett_ = gets.chomp
             puts "\rhere the html code\n"
-            capture = open(html_code)
-            work = Nokogiri::HTML(capture)  #sorry for the variables, but to make it work, just the function is not enough
-            print "#{work}".yellow
+            body_capture = Net::HTTP.get_response(URI(targett_))                 
+            print "\n#{body_capture.body.yellow}\n"
         rescue Errno::ENOENT, Errno::ECONNREFUSED
             puts "\rselect a valid target! (example https://pornhub.com)".red
         rescue ArgumentError => ah 
@@ -139,8 +138,9 @@ break if input == "exit"
                     begin
                         socket.connect_nonblock(remote_addr)
                     rescue Errno::EINPROGRESS
+                        #next
                     end
-                   time = 1
+                    time = 1
                     sockets = Socket.select(nil, [socket], nil, time)
                     if sockets
                         puts "\rPort #{numbers} is open".yellow
@@ -209,6 +209,26 @@ break if input == "exit"
         wordlist_option = gets.chomp
         print fuzzer(fuzz_option, wordlist_option)
     end
+    if input == "ssl"
+        def sexssl?(oscuro)
+            ssl = true
+            string = "\n#{oscuro} ssl certificate: "
+            begin
+                URI.open("https://#{oscuro}")
+                puts " ".yellow[..-5]
+                puts string, ssl
+            rescue OpenSSL::SSL::SSLError 
+                ssl = false
+                puts string, ssl
+            rescue SocketError => lmao 
+                puts "\nSelect a valid target! (example www.google.com)".red
+                puts lmao.red
+            end
+        end
+        print "\rTarget: "
+        ssl_target = gets.chomp
+        sexssl?(ssl_target)
+    end
     if input == "-r"
         system('clear||cls')
         puts "Resetted!".cyan
@@ -218,7 +238,8 @@ break if input == "exit"
         print help
     elsif input == "banner"
         print logo
-        commands = ['headers', 'lookup', '-r', 'help', 'linkshunt','fingerprint','portscan',"fuzzer", "xml-parser"]
+        commands = ["ssl",'headers', 'lookup', '-r', 'help', 'linkshunt','fingerprint',
+                    'portscan',"fuzzer","xml-parser"]
     else input != commands
         puts "\r"
     end

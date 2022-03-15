@@ -28,7 +28,7 @@ help         => help you :kek:
 Only avaible on Linux, |Tested on a linux subsystem.|
 
 # New featuers
-1) Added error reports
+1) Added the new command ssl, for check the ssl certificate
 2) Restyled the lookup command: now it's work with an API, [this.](https://ipwhois.app)
 3) More compatibiliy with the gems
 4) More faster with Threads

@@ -185,7 +185,7 @@ break if input == "exit"
                         requestt = Net::HTTP.get_response(uriiii)
                         if requestt.code == '200'
                             puts "\ndirectory open! '#{dir}'".yellow
-                            log = File.new("Valid-dir.log", 'a')
+                            log = File.new("valid.log", 'a')
                             log.write(dir+"\n")
                             log.close()
                             puts "saved on file Valid-dir.log!"

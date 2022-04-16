@@ -16,7 +16,9 @@ linkshunt    => view the correlated links in a site
 xml-parser   => parse an xml document of a site
 fuzzer       => do the directory fuzzing in a site
 -r           => reset & clear display
+banner       => show the banner
 help         => help you :kek:
+exit         => exit
 ```
 
 # Dependencies:
@@ -34,7 +36,7 @@ Only avaible on Linux, |Tested on a linux subsystem.|
 4) More faster with Threads
 5) Colors, colors!
 
-Version upgrade (1.7.5 to 1.8.2)
+Version upgrade (1.7.5 to 1.8.3)
 
 
 # Credits

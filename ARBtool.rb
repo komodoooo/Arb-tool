@@ -18,7 +18,9 @@ linkshunt    => view the correlated links in a site
 xml-parser   => parse an xml document of a site
 fuzzer       => do the directory fuzzing in a site
 -r           => reset & clear display
-help         => help you :kek:\r""".light_magenta
+banner       => show the banner
+help         => help you :kek:
+exit         => exit\r""".light_magenta
 end
 
 def logo
@@ -29,16 +31,18 @@ def logo
                  \_|_/        By LoJacopS
 '''.cyan[..-5]
     print banner
-    puts "v1.8.2\n"
+    puts "v1.8.3\n"
     print Time.now
     puts "\n"
 end
 
 =begin
+
 Komodo, 5/02/2022
 Hi reader of this code, i'm sorry for eventually
 shitty codes in arb. It was my first ruby project in 2020...
 Right now, I update it in randomly moments
+
 =end
 
 print logo
@@ -217,14 +221,17 @@ break if input == "exit"
                 URI.open("https://#{oscuro}")
                 puts " ".yellow[..-5]
                 puts string, ssl
-            rescue OpenSSL::SSL::SSLError 
+            rescue OpenSSL::SSL::SSLError, Errno::EHOSTUNREACH
                 ssl = false
+                puts " ".yellow[..-5]
                 puts string, ssl
-            rescue SocketError => lmao 
-                puts "\nSelect a valid target! (example www.google.com)".red
-                puts lmao.red
+            rescue SocketError, NoMethodError => lmao 
+                puts "\nSelect a valid target! (example www.google.com)".red[..-5]
+                puts lmao
+                nil
             end
         end
+        puts "\rExample: sex.com"
         print "\rTarget: "
         ssl_target = gets.chomp
         sexssl?(ssl_target)
@@ -238,11 +245,9 @@ break if input == "exit"
         print help
     elsif input == "banner"
         print logo
-        commands = ["ssl",'headers', 'lookup', '-r', 'help', 'linkshunt','fingerprint',
-                    'portscan',"fuzzer","xml-parser"]
-    else input != commands
+    else 
         puts "\r"
     end
 system(input)
 print prompt
-end 
+end

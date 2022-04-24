@@ -27,7 +27,7 @@ exit         => exit
 - The framework nokogiri
 - The gems "open-uri", "colorize" (and socket & net-http system gems)
 
-Only avaible on Linux, |Tested on a linux subsystem.|
+Tested on ubuntu WSL.
 
 # New featuers
 1) Added the new command ssl, for check the ssl certificate

@@ -3,16 +3,17 @@ echo "Sometimes some gems are not compatible with the system."
 echo "start this file as root"
 echo """
                     ___
- ▄▀█ █▀█ █▄▄       / | \   
+ ▄▀█ █▀█ █▄▄       / | \   
  █▀█ █▀▄ █▄█ tool |--0--|   
                    \_|_/ Setup
 """
 function main {
     {
-        gem install bundle
-        bundle install
-        chmod +x ARBtool.rb
-        ruby ARBtool.rb
+        gem install bundle 
+        cd config
+        bundle install || apt install ruby-bundler && bundle install
+        cd ..
+        ruby arb.rb
     } || {
         FAIL="""
 ERROR :/
@@ -26,4 +27,4 @@ Something wrong uhm...
         echo -e $FAIL
     }
 }
-main
+main;

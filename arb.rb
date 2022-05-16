@@ -225,7 +225,7 @@ break if input == "exit"
         print "\r(type default for use the default wordlist)\nselect a wordlist: "
         wordlist_option = gets.chomp
         if wordlist_option == "default"
-            wordlist = Net::HTTP.get(URI("https://pst.klgrth.io/paste/zx64pp2k4qyp7yqk5d7pvbua/raw"))
+            wordlist = Net::HTTP.get(URI("https://raw.githubusercontent.com/komodoooo/dirfuzzer/main/wordlist.txt"))
             writereq = File.new("wordlist.txt", "a")
             writereq.write(wordlist)
             writereq.close()

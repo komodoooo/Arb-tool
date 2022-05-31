@@ -32,22 +32,17 @@ def logo
 '''.cyan[..-5]
     print banner
     puts "v2.0.1\n"
-    print Time.now
-    puts "\nPress [enter] to start\n"
 end
 
 =begin
-
 Komodo, 5/02/2022
 Hi reader of this code, i'm sorry for eventually
 shitty codes in arb. It was my first ruby project in 2020...
 Right now, I update it in randomly moments
-
 =end
 
 print logo
-puts "Welcome to arb!"
-prompt = "\rArb>".green[..-5]
+puts "\rWelcome to arb!\n\n"
 class Commands 
     def headers(target)
         Thread.new{
@@ -101,7 +96,7 @@ class Commands
         ports = [15,21,22,23,25,26,50,51,53,67,58,69,80,110,119,123,
                 135,139,143,161,162,200,389,443,587,989,990,
                 993,995,1000,2077,2078,2082,2083,2086,      #most used ports
-                2087,2095,2096,3080,3306,3389,8843
+                2087,2095,2096,3080,3306,3389,8080,8843
             ]      
         #ports = Range.new(1,5000)      Ranges? Nah.
         begin
@@ -184,10 +179,11 @@ class Commands
         end
     end
 end
-while (input = gets.chomp)
-break if input == "exit"
+while true
+    print "\rArb>".green[..-5]
+    input = gets.chomp
+    break if input == "exit"
     exec = Commands.new()
-    print prompt && input
     if input == "headers"
         print "\rTarget: "
         sessoinput = gets.chomp
@@ -203,15 +199,15 @@ break if input == "exit"
             end
         }.join
     elsif input == "fingerprint"
-        puts "\rinsert a site target: "
+        print "\rinsert a site target: "
         pazzo = gets.chomp
         exec.fingerprint(pazzo)
     elsif input == "linkshunt"
-        puts "\rinsert a link:"
+        print "\rinsert a link:"
         url = gets.chomp
         exec.linkshunt(url)
     elsif input == "portscan"
-        puts "(example: www.google.com)"
+        print "(example: www.google.com)"
         print "\rtype an ip to check the ports open on: "
         scan_target = gets.chomp
         exec.scan_port(scan_target)
@@ -250,6 +246,4 @@ break if input == "exit"
     else 
        nil
     end
-    print prompt
-    system(input)
 end

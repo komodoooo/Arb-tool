@@ -244,6 +244,6 @@ while true
     elsif input == "banner"
         print logo
     else 
-       nil
+       system(input)
     end
 end

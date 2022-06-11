@@ -37,7 +37,7 @@ end
 =begin
 Komodo, 5/02/2022
 Hi reader of this code, i'm sorry for eventually
-shitty codes in arb. It was my first ruby project in 2020...
+shitty codes in arb. It was my first ruby project in 2020
 Right now, I update it in randomly moments
 =end
 
@@ -45,16 +45,14 @@ print logo
 puts "\rWelcome to arb!\n\n"
 class Commands 
     def headers(target)
-        Thread.new{
-            begin
-                urii = URI(target)
-                response = Net::HTTP.get_response(urii) 
-                response.to_hash['set-cookie']                      #get the sexy headers
-                puts "Headers:\n #{response.to_hash.inspect.gsub("],","],\n")}".yellow
-            rescue Errno::ENOENT, Errno::ECONNREFUSED, SocketError
-                puts "\rselect a valid target! (example https://pornhub.com)".red
-            end
-        }.join
+        begin
+            urii = URI(target)
+            response = Net::HTTP.get_response(urii) 
+            response.to_hash['set-cookie']                      #get the sexy headers
+            puts "Headers:\n #{response.to_hash.inspect.gsub("],","],\n")}".yellow
+        rescue Errno::ENOENT, Errno::ECONNREFUSED, SocketError
+            puts "\rselect a valid target! (example https://pornhub.com)".red
+        end
     end
     def lookup(oscuro)
         urrah = URI("https://ipwhois.app/json/#{oscuro}")
@@ -74,23 +72,18 @@ class Commands
         end
     end
     def linkshunt(site)
-        Thread.new{
-                begin      
-                    puts "\rtarget selected: #{site}"
-                    doc = Nokogiri::HTML(open(site))
-                    element = doc.at_xpath("//a/@href")
-                    element.map{|amogus| amogus.value}
-                    nodeset = doc.css('a[href]')
-                    yay = nodeset.map {|element| element["href"]}
-                    puts "\nCorrelateds link at #{site}:\n".yellow
-                    yay.each do |link|
-                        puts "\r#{link}".yellow
-                    end
-                rescue => eeeeh
-                    puts "ERROR\n#{eeeeh}".red
-                    puts ""
-                end
-        }.join
+        begin      
+            puts "\rtarget selected: #{site}"
+            parse = Nokogiri::HTML(open(site))
+            scrape = parse.at_xpath("//a/@href").map{|amogus| amogus.value}
+            yay = parse.css('a[href]').map {|element| element["href"]}
+            puts "\nCorrelateds link at #{site}:\n".yellow
+            yay.each do |link|
+                puts "\r#{link}".yellow
+            end
+        rescue => eeeeh
+            puts "ERROR\n#{eeeeh}\n".red
+        end    
     end
     def scan_port(domain)  
         ports = [15,21,22,23,25,26,50,51,53,67,58,69,80,110,119,123,
@@ -123,37 +116,37 @@ class Commands
     end
     def xml_parser(document)
         begin
-            ehm = Nokogiri::XML(open(document)) do |config|  
-                puts "#{config.strict.noblanks}".yellow[..-5]
-            end
-            print ehm
-            puts "\nAll saved in the file document.xml!"
-            document = File.new("document.xml", 'a')
-            document.write(ehm)
-            document.close()
+            Thread.new{
+                ehm = Nokogiri::XML(open(document)) do |config|  
+                    puts "#{config.strict.noblanks}".yellow[..-5]
+                end
+                print ehm
+                puts "\nAll saved in the file document.xml!"
+                document = File.new("document.xml", 'a')
+                document.write(ehm)
+                document.close()
+            }.join
         rescue Errno::ENOENT, Errno::ECONNREFUSED, Nokogiri::XML::SyntaxError, URI::InvalidURIError, OpenURI::HTTPError
             puts "\rselect a valid target! (example https://google.com/sitemap.xml)".red
         end
     end
     def fuzzer(link, wordlist)
         begin
-            Thread.new{
-                wordlist = File.open(wordlist)
-                ohyes = wordlist.map {|x| x.chomp }
-                ohyes.each do |dir|
-                    uriiii = URI("#{link}/#{dir}/")
-                    requestt = Net::HTTP.get_response(uriiii)
-                    if requestt.code == '200'
-                        puts "\ndirectory open! '#{dir}'".yellow
-                        log = File.new("valid.log", "a")
-                        log.write(dir+"\n")
-                        log.close()
-                        puts "saved on file valid.log!".yellow
-                    else
-                        puts "\nscanning...#{requestt.code}".cyan                    #directory closed
-                    end
+            wordlist = File.open(wordlist)
+            ohyes = wordlist.map {|x| x.chomp }
+            ohyes.each do |dir|
+                uriiii = URI("#{link}/#{dir}/")
+                requestt = Net::HTTP.get_response(uriiii)
+                if requestt.code == '200'
+                    puts "\ndirectory open! '#{dir}'".yellow
+                    log = File.new("valid.log", "a")
+                    log.write(dir+"\n")
+                    log.close()
+                    puts "saved on file valid.log!".yellow
+                else
+                    puts "\nscanning...#{requestt.code}".cyan                    #directory closed
                 end
-            }.join
+            end
         rescue Errno::ENOENT, Errno::ECONNREFUSED
             puts "\rERROR: Select a valid wordlist! (make sure that file of wordlist is on the same path)".red
         rescue Net::OpenTimeout
@@ -175,7 +168,6 @@ class Commands
         rescue SocketError, NoMethodError => lmao 
             puts "\nSelect a valid target! (example www.google.com)".red[..-5]
             puts lmao
-            nil
         end
     end
 end
@@ -189,10 +181,10 @@ while true
         sessoinput = gets.chomp
         exec.headers(sessoinput)
     elsif input == "lookup"
+        puts "\rRemember to select a valid target! (example www.twitter.com or 104.244.42.1)".red
+        print "\rSelect a valid target: ".green
+        url_target = gets.chomp
         Thread.new{
-            puts "\rRemember to select a valid target! (example www.twitter.com or 104.244.42.1)".red
-            print "\rSelect a valid target: ".green
-            url_target = gets.chomp
             exec.lookup(url_target) do |output|
                 print output
                 puts "\n"
@@ -203,7 +195,7 @@ while true
         pazzo = gets.chomp
         exec.fingerprint(pazzo)
     elsif input == "linkshunt"
-        print "\rinsert a link:"
+        print "\rinsert a link: "
         url = gets.chomp
         exec.linkshunt(url)
     elsif input == "portscan"
@@ -221,22 +213,26 @@ while true
         print "\r(type default for use the default wordlist)\nselect a wordlist: "
         wordlist_option = gets.chomp
         if wordlist_option == "default"
-            wordlist = Net::HTTP.get(URI("https://raw.githubusercontent.com/komodoooo/dirfuzzer/main/wordlist.txt"))
-            writereq = File.new("wordlist.txt", "a")
-            writereq.write(wordlist)
-            writereq.close()
+            Thread.new{
+                wordlist = Net::HTTP.get(URI("https://raw.githubusercontent.com/komodoooo/dirfuzzer/main/wordlist.txt"))
+                writereq = File.new("wordlist.txt", "a")
+                writereq.write(wordlist)
+                writereq.close()
+            }.join
             puts "\nCreated file wordlist.txt!".yellow
-            exec.fuzzer(fuzz_target, "wordlist.txt")
+            Thread.new{
+                exec.fuzzer(fuzz_target, "wordlist.txt")
+            }.join
         else 
             exec.fuzzer(fuzz_target, wordlist_option)
         end 
     elsif input == "ssl"
-        puts "\rExample: sex.com"
+        puts "\rExample: google.com"
         print "\rTarget: "
         ssl_target = gets.chomp
         exec.sexssl?(ssl_target)
     elsif input == "-r"
-        system('clear||cls')
+        system("clear||cls")
         puts "Resetted!".cyan
         puts "\n"
     elsif input == "help"

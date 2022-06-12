@@ -1,5 +1,5 @@
 # ARB 
-What is arb? arb is a tool written in ruby which, in addition to describing various information about a target site (host, open ports, headers, etc.), also captures the fingerprint, the xml version and returns it to you as output. It can also find all links related to a site, or the open ports in an ip and fuzzing a directory in a site.
+What is arb? arb is a tool written in ruby which, in addition to describing various information about a target site (host, open ports, headers, etc.), also captures the body, the xml version and returns it to you as output. It can also find all links related to a site, or the open ports in an ip and fuzzing a directory in a site.
 
 # Getting started
 Clone repository with _`git clone https://github.com/komodoooo/arb-tool`_
@@ -15,7 +15,7 @@ lookup       => show infos of an user target (ip/domain)
 portscan     => check the open port on a target (ip/domain)
 ssl          => check the ssl certificate (ip/domain)
 headers      => returns the headers of a site
-fingerprint  => capture the html code of a site
+body         => capture the html code of a site
 linkshunt    => view the correlated links in a site
 xml-parser   => parse an xml document of a site
 fuzzer       => do the directory fuzzing in a site

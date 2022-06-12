@@ -13,7 +13,7 @@ lookup       => show infos of an user target (ip/domain)
 portscan     => check the open port on a target (ip/domain)
 ssl          => check the ssl certificate (ip/domain)
 headers      => returns the headers of a site
-fingerprint  => capture the html code of a site
+body         => capture the html code of a site
 linkshunt    => view the correlated links in a site
 xml-parser   => parse an xml document of a site
 fuzzer       => do the directory fuzzing in a site
@@ -60,7 +60,7 @@ class Commands
         puts "\n"
         puts mlml.gsub(",", ",\n").yellow
     end
-    def fingerprint(body)
+    def body(body)
         begin
             puts "\rhere the html code\n"
             body_capture = Net::HTTP.get_response(URI(body))                 
@@ -177,12 +177,12 @@ while true
     break if input == "exit"
     exec = Commands.new()
     if input == "headers"
-        print "\rTarget: "
+        print "\rUrl: "
         sessoinput = gets.chomp
         exec.headers(sessoinput)
     elsif input == "lookup"
         puts "\rRemember to select a valid target! (example www.twitter.com or 104.244.42.1)".red
-        print "\rSelect a valid target: ".green
+        print "\rAddress: ".green
         url_target = gets.chomp
         Thread.new{
             exec.lookup(url_target) do |output|
@@ -190,25 +190,25 @@ while true
                 puts "\n"
             end
         }.join
-    elsif input == "fingerprint"
-        print "\rinsert a site target: "
+    elsif input == "body"
+        print "\rUrl: "
         pazzo = gets.chomp
-        exec.fingerprint(pazzo)
+        exec.body(pazzo)
     elsif input == "linkshunt"
-        print "\rinsert a link: "
+        print "\rUrl: "
         url = gets.chomp
         exec.linkshunt(url)
     elsif input == "portscan"
         print "(example: www.google.com)"
-        print "\rtype an ip to check the ports open on: "
+        print "\rAddress: "
         scan_target = gets.chomp
         exec.scan_port(scan_target)
     elsif input == "xml-parser"
-        print "\rSite with xml: "
+        print "\rUrl: "
         xmlml = gets.chomp
         exec.xml_parser(xmlml)
     elsif input == "fuzzer"
-        print "\rlink: "
+        print "\rUrl: "
         fuzz_target = gets.chomp
         print "\r(type default for use the default wordlist)\nselect a wordlist: "
         wordlist_option = gets.chomp
@@ -228,7 +228,7 @@ while true
         end 
     elsif input == "ssl"
         puts "\rExample: google.com"
-        print "\rTarget: "
+        print "\rAddress: "
         ssl_target = gets.chomp
         exec.sexssl?(ssl_target)
     elsif input == "-r"

@@ -162,7 +162,7 @@ class Commands
         begin
             URI.open("https://#{oscuro}")
             puts "#{string} #{ssl}\n\n".yellow[..-5]
-        rescue OpenSSL::SSL::SSLError, Errno::EHOSTUNREACH
+        rescue OpenSSL::SSL::SSLError, Errno::EHOSTUNREACH, Errno::ECONNREFUSED
             ssl = false
             puts "#{string} #{ssl}\n\n".yellow[..-5]
         rescue SocketError, NoMethodError => lmao 
@@ -199,7 +199,7 @@ while true
         url = gets.chomp
         exec.linkshunt(url)
     elsif input == "portscan"
-        print "(example: www.google.com)"
+        puts "(example: www.google.com)"
         print "\rAddress: "
         scan_target = gets.chomp
         exec.scan_port(scan_target)

@@ -55,10 +55,13 @@ class Commands
         end
     end
     def lookup(oscuro)
+        sexp = {
+            "Content-type" => "application/json"
+        }
         urrah = URI("https://ipwhois.app/json/#{oscuro}")
+        urrah.query = URI.encode_www_form(sexp)
         mlml = Net::HTTP.get(urrah)
-        puts "\n"
-        puts mlml.gsub(",", ",\n").yellow
+        puts "\n"+mlml.gsub(",", ",\n").yellow
     end
     def body(body)
         begin
@@ -85,30 +88,29 @@ class Commands
             puts "ERROR\n#{eeeeh}\n".red
         end    
     end
-    def scan_port(domain)  
-        ports = [15,21,22,23,25,26,50,51,53,67,58,69,80,110,119,123,
-                135,139,143,161,162,200,389,443,587,989,990,
-                993,995,1000,2077,2078,2082,2083,2086,      #most used ports
-                2087,2095,2096,3080,3306,3389,8080,8843,8888
-            ]      
+    def portscanner(address)  
+        ports = [15,20,21,22,23,25,26,51,53,67,58,67,68,69,80,102,110,119,123,
+                135,139,143,161,162,200,389,443,465,587,631,989,990,
+                993,995,10029,2077,2078,2082,2083,2086,      #most used ports
+                2087,2095,2096,3080,3306,3389,8080,8843,8888]      
         #ports = Range.new(1,5000)      Ranges? Nah.
         begin
             for numbers in ports
-                socket = Socket.new(:INET, :STREAM)
-                remote_addr = Socket.sockaddr_in(numbers, domain)
-                begin
-                    socket.connect_nonblock(remote_addr)
-                rescue Errno::EINPROGRESS
-                    #next
-                end
-                time = 1
-                sockets = Socket.select(nil, [socket], nil, time)
-                if sockets
-                    puts "\rPort #{numbers} is open".yellow
-                else
-                    puts "\rPort #{numbers} is closed".red
-                end
-            end
+                Thread.new{
+                    socket = Socket.new(:INET, :STREAM)
+                    remote_addr = Socket.sockaddr_in(numbers, address)
+                    begin
+                        socket.connect_nonblock(remote_addr)
+                    rescue Errno::EINPROGRESS
+                    end
+                    sockets = Socket.select(nil, [socket], nil, 1)
+                    if sockets
+                        puts "\rPort #{numbers} is open".yellow
+                    else
+                       puts "\rPort #{numbers} is closed".red
+                    end
+                }.join
+            end    
         rescue SocketError => sock_err
             puts "ERROR\n#{sock_err}".red
             puts ""
@@ -202,7 +204,7 @@ while true
         puts "(example: www.google.com)"
         print "\rAddress: "
         scan_target = gets.chomp
-        exec.scan_port(scan_target)
+        exec.portscanner(scan_target)
     elsif input == "xml-parser"
         print "\rUrl: "
         xmlml = gets.chomp

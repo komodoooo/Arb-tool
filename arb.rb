@@ -78,10 +78,9 @@ class Commands
         begin      
             puts "\rtarget selected: #{site}"
             parse = Nokogiri::HTML(open(site))
-            scrape = parse.at_xpath("//a/@href").map{|amogus| amogus.value}
-            yay = parse.css('a[href]').map {|element| element["href"]}
+            scrape = parse.css("a[href]").map {|element| element["href"]}
             puts "\nCorrelateds link at #{site}:\n".yellow
-            yay.each do |link|
+            scrape.each do |link|
                 puts "\r#{link}".yellow
             end
         rescue => eeeeh

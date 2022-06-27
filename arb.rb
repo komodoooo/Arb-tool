@@ -46,20 +46,15 @@ puts "\rWelcome to arb!\n\n"
 class Commands 
     def headers(target)
         begin
-            urii = URI(target)
-            response = Net::HTTP.get_response(urii) 
-            response.to_hash['set-cookie']                      #get the sexy headers
+            response = Net::HTTP.get_response(URI(target))
+            response.to_hash['set-cookie']                     #get the sexy headers
             puts "Headers:\n #{response.to_hash.inspect.gsub("],","],\n")}".yellow
         rescue Errno::ENOENT, Errno::ECONNREFUSED, SocketError
             puts "\rselect a valid target! (example https://pornhub.com)".red
         end
     end
     def lookup(oscuro)
-        sexp = {
-            "Content-type" => "application/json"
-        }
         urrah = URI("https://ipwhois.app/json/#{oscuro}")
-        urrah.query = URI.encode_www_form(sexp)
         mlml = Net::HTTP.get(urrah)
         puts "\n"+mlml.gsub(",", ",\n").yellow
     end

@@ -13,14 +13,14 @@ It will give you the following output:
 
 ```
 ARB commands:
-lookup       => show infos of an user target (ip/domain)
-portscan     => check the open port on a target (ip/domain)
-ssl          => check the ssl certificate (ip/domain)
-headers      => returns the headers of a site
+lookup       => show informations of a target (ip/domain)
+portscan     => check open ports on a target (ip/domain)
+ssl          => check SSL certificate (ip/domain)
+headers      => return the headers of a site
 body         => capture the html code of a site
-linkshunt    => view the correlated links in a site
+linkshunt    => show related links on a site
 xml-parser   => parse an xml document of a site
-fuzzer       => do the directory fuzzing in a site
+fuzzer       => do directory fuzzing in a site
 -r           => reset & clear display
 banner       => show the banner
 help         => help you :kek:
@@ -46,4 +46,5 @@ Version upgrade (1.8.3 to 2.0.1, latest version. Maybe.)
 
 
 # Credits
+
 By **me**

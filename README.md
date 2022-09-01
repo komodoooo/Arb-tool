@@ -16,11 +16,12 @@ ARB commands:
 lookup       => show informations of a target (ip/domain)
 portscan     => check open ports on a target (ip/domain)
 ssl          => check SSL certificate (ip/domain)
+svrscan      => scan possible vulns of a site's webserver
+fuzzer       => do directory fuzzing in a site
+linkshunt    => show related links on a site
 headers      => return the headers of a site
 body         => capture the html code of a site
-linkshunt    => show related links on a site
 xml-parser   => parse an xml document of a site
-fuzzer       => do directory fuzzing in a site
 -r           => reset & clear display
 banner       => show the banner
 help         => help you :kek:
@@ -36,13 +37,14 @@ exit         => exit
 Tested on ubuntu WSL.
 
 # New featuers
-1) Added the new command ssl, for check the ssl certificate
-2) Restyled the lookup command: now it's work with an API, [this.](https://ipwhois.app)
-3) Colors, colors! And more compatibiliy with the gems
-4) Now arb is **totally** written with object-oriented code
-5) Restyled the fuzzer command for default wordlist support
+1) Added the new ssl command, to verify the ssl certificate
+2) Restyled the lookup command: now it works with an API, [this.](https://ipwhois.app)
+3) Colors, colors! And more gem compatibility
+4) Now arb is **totally** written with object oriented code
+5) Restyling of the fuzzer command for default wordlist support
+6) Added svrscan command, scan for possible webserver vulns by looking at versions (Apache/Nginx)
 
-Version upgrade (1.8.3 to 2.0.1, latest version. Maybe.)
+Version upgrade (1.8.3 to 2.1.0, latest version. Maybe.)
 
 
 # Credits

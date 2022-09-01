@@ -4,6 +4,7 @@ require 'nokogiri'
 require 'open-uri'
 require 'socket'
 require 'colorize'
+require_relative 'config/version.rb'
 
 
 def help
@@ -12,11 +13,12 @@ ARB commands:
 lookup       => show informations of a target (ip/domain)
 portscan     => check open ports on a target (ip/domain)
 ssl          => check SSL certificate (ip/domain)
+svrscan      => scan possible vulns of a site's webserver
+fuzzer       => do directory fuzzing in a site
+linkshunt    => show related links on a site
 headers      => return the headers of a site
 body         => capture the html code of a site
-linkshunt    => show related links on a site
 xml-parser   => parse an xml document of a site
-fuzzer       => do directory fuzzing in a site
 -r           => reset & clear display
 banner       => show the banner
 help         => help you :kek:
@@ -28,10 +30,10 @@ def logo
                   ___
  ▄▀█ █▀█ █▄▄     / | \ 
  █▀█ █▀▄ █▄█    |--0--|
-                 \_|_/        By LoJacopS
+                 \_|_/        By Komodo
 '''.cyan[..-5]
     print banner
-    puts "v2.0.1\n"
+    puts VERSION.v
 end
 
 =begin
@@ -42,7 +44,6 @@ Right now, I update it in randomly moments
 =end
 
 print logo
-puts "\rWelcome to arb!\n\n"
 class Commands 
     def headers(target)
         begin
@@ -166,6 +167,26 @@ class Commands
             puts lmao
         end
     end
+    def svrscan(target)
+        r = Net::HTTP.get_response(URI(target))
+        r.to_hash["set-cookie"]
+        bruh = r.to_hash["server"].inspect.split().first
+        server = r.to_hash["server"].inspect.gsub('["',"").gsub('"]',"")
+        begin
+            a = bruh.match("/(.*)")[1].to_s
+            if bruh.include?("Apache") && a.split(".")[1].to_i <= 4 && a.split(".")[2].to_i <= 53
+                puts "\n#{server} looks vulnerable, check\n".yellow[..-5]
+                puts "https://www.cvedetails.com/vulnerability-list/vendor_id-45/product_id-66/Apache-Http-Server.html\n\n"
+            elsif bruh.include?("nginx") && bruh.match("/(.*)")[1].to_s <= "1.20.0"       
+                puts "\n#{server} looks vulnerable, check\n".yellow[..-5]
+                puts "http://nginx.org/en/security_advisories.html\n\n"
+            else
+                puts "\n#{server} doesn't seem vulnerable\n".yellow
+            end
+        rescue NoMethodError 
+            puts "\n#{server} doesn't seem vulnerable\n".yellow
+        end
+    end
 end
 while true
     print "\rArb>".green[..-5]
@@ -227,9 +248,16 @@ while true
         print "\rAddress: "
         ssl_target = gets.chomp
         exec.sexssl?(ssl_target)
+    elsif input == "svrscan"
+        print "\rUrl: "
+        begin
+            exec.svrscan(gets.chomp)
+        rescue Errno::ECONNREFUSED, SocketError => bruh 
+            puts "\nInvalid Target! #{bruh}\n".red
+        end
     elsif input == "-r"
         system("clear||cls")
-        puts "Resetted!".cyan
+        puts "Clean".cyan
         puts "\n"
     elsif input == "help"
         print help

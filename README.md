@@ -1,7 +1,9 @@
 # ARB 
-What is arb? 
+#### What is arb? 
 
-arb is a tool written in ruby that allows you to get various information about a host
+ARB tool is a toolkit written in ruby, since 2020.
+
+Now i update it randomly moments, it was my first ruby project lol.
 
 # Getting started
 Clone repository with _`git clone https://github.com/komodoooo/arb-tool`_

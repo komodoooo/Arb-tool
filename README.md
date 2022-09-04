@@ -1,7 +1,7 @@
 # ARB 
 #### What is arb? 
 
-ARB tool is a toolkit written in ruby, since 2020.
+ARB is a toolkit written in ruby, since June 2021.
 
 Now i update it randomly moments, it was my first ruby project lol.
 

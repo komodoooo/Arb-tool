@@ -66,7 +66,7 @@ class Commands
             puts "\rhere the html code\n"
             body_capture = Net::HTTP.get_response(URI(body))                 
             print "\n#{body_capture.body.yellow}\n"
-        rescue Errno::ENOENT, Errno::ECONNREFUSED
+        rescue Errno::ENOENT, Errno::ECONNREFUSED,SocketError
             puts "\rselect a valid target! (example https://pornhub.com)".red
         rescue ArgumentError => ah 
             puts "\rERROR: #{ah}".red
@@ -191,11 +191,9 @@ class Commands
     end
     def dnsenum(domain)
         begin
-            puts "\rExample: google.com"
             puts Net::DNS::Resolver.start(domain, Net::DNS::ANY).answer()
         rescue => eh 
-            puts "\nSelect a valid target! (example google.com)\n".red[..-5]
-            puts eh
+            puts "\nSelect a valid target! (example www.google.com)\n#{eh}".red[..-5]
         end
     end
 end
@@ -205,11 +203,12 @@ while true
     input = gets.chomp
     break if input == "exit"
     exec = Commands.new()
-    if input == "headers"
+    case input
+    when "headers"
         print "\rUrl: "
         sessoinput = gets.chomp
         exec.headers(sessoinput)
-    elsif input == "lookup"
+    when "lookup"
         puts "\rRemember to select a valid target! (example www.twitter.com or 104.244.42.1)".red
         print "\rAddress: ".green
         url_target = gets.chomp
@@ -219,24 +218,24 @@ while true
                 puts "\n"
             end
         }.join
-    elsif input == "body"
+    when "body"
         print "\rUrl: "
         pazzo = gets.chomp
         exec.body(pazzo)
-    elsif input == "linkshunt"
+    when "linkshunt"
         print "\rUrl: "
         url = gets.chomp
         exec.linkshunt(url)
-    elsif input == "portscan"
+    when "portscan"
         puts "(example: www.google.com)"
         print "\rAddress: "
         scan_target = gets.chomp
         exec.portscanner(scan_target)
-    elsif input == "xml-parser"
+    when "xml-parser"
         print "\rUrl: "
         xmlml = gets.chomp
         exec.xml_parser(xmlml)
-    elsif input == "fuzzer"
+    when "fuzzer"
         print "\rUrl: "
         fuzz_target = gets.chomp
         print "\r(type default for use the default wordlist)\nselect a wordlist: "
@@ -255,28 +254,29 @@ while true
         else 
             exec.fuzzer(fuzz_target, wordlist_option)
         end 
-    elsif input == "ssl"
+    when "ssl"
         puts "\rExample: google.com"
         print "\rAddress: "
         ssl_target = gets.chomp
         exec.sexssl?(ssl_target)
-    elsif input == "svrscan"
+    when "svrscan"
         print "\rUrl: "
         begin
             exec.svrscan(gets.chomp)
         rescue Errno::ECONNREFUSED, SocketError => bruh 
             puts "\nInvalid Target! #{bruh}\n".red
         end
-    elsif input == "dnsenum"
+    when "dnsenum"
+        puts "\rExample: google.com"
         print "\rDomain: "
         exec.dnsenum(gets.chomp)
-    elsif input == "-r"
+    when "-r"
         system("clear||cls")
         puts "Clean".cyan
         puts "\n"
-    elsif input == "help"
+    when "help"
         print help
-    elsif input == "banner"
+    when "banner"
         print logo
     else 
        system(input)

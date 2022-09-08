@@ -1,7 +1,7 @@
 # ARB 
 #### What is arb? 
 
-ARB is a toolkit written in ruby, since June 2021.
+ARB tool is a toolkit written in ruby, since June 2021.
 
 Now i update it randomly moments, it was my first ruby project lol.
 
@@ -17,6 +17,7 @@ It will give you the following output:
 ARB commands:
 lookup       => show informations of a target (ip/domain)
 portscan     => check open ports on a target (ip/domain)
+dnsenum      => enumerate DNS (ip/domain)
 ssl          => check SSL certificate (ip/domain)
 svrscan      => scan possible vulns of a site's webserver
 fuzzer       => do directory fuzzing in a site
@@ -32,19 +33,19 @@ exit         => exit
 
 # Dependencies:
 
-- The ruby programming language and rubygem package manager
-- The framework nokogiri
-- The gems "open-uri", "colorize" (and socket & net-http system gems)
+- The ruby programming language and rubygems package manager
+- The gems "nokogiri", "open-uri", "colorize" (and net-http, net-dns & socket system gems)
 
-Tested on ubuntu WSL.
+Tested on Ubuntu WSL, Ubuntu 22.04 LTS, Debian.
 
 # New featuers
-1) Added the new ssl command, to verify the ssl certificate
-2) Restyled the lookup command: now it works with an API, [this.](https://ipwhois.app)
-3) Colors, colors! And more gem compatibility
-4) Now arb is **totally** written with object oriented code
-5) Restyling of the fuzzer command for default wordlist support
-6) Added svrscan command, scan for possible webserver vulns by looking at versions (Apache/Nginx)
+1) Added the new dnsenum command, to enumerate DNS
+2) Added the new ssl command, to verify the ssl certificate
+3) Restyled the lookup command: now it works with an API, [this](https://ipwhois.app)
+4) Colors, colors! And more gem compatibility
+5) Now arb is **totally** written with object oriented code
+6) Restyling of the fuzzer command for default wordlist support
+7) Added svrscan command, scan for possible webserver vulns by looking at versions (Apache/Nginx)
 
 Version upgrade (1.8.3 to 2.1.0, latest version. Maybe.)
 

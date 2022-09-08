@@ -1,10 +1,11 @@
 #!usr/bin/env ruby
+require_relative 'config/version.rb'
+require 'net/dns'
 require 'net/http'
 require 'nokogiri'
 require 'open-uri'
 require 'socket'
 require 'colorize'
-require_relative 'config/version.rb'
 
 
 def help
@@ -12,6 +13,7 @@ def help
 ARB commands:
 lookup       => show informations of a target (ip/domain)
 portscan     => check open ports on a target (ip/domain)
+dnsenum      => enumerate DNS (ip/domain)
 ssl          => check SSL certificate (ip/domain)
 svrscan      => scan possible vulns of a site's webserver
 fuzzer       => do directory fuzzing in a site
@@ -33,13 +35,13 @@ def logo
                  \_|_/        By Komodo
 '''.cyan[..-5]
     print banner
-    puts VERSION.v
+    puts VERSION.show
 end
 
 =begin
 Komodo, 5/02/2022
 Hi reader of this code, i'm sorry for eventually
-shitty codes in arb. It was my first ruby project in 2020
+shitty codes in arb. It was my first ruby project in 2021
 Right now, I update it in randomly moments
 =end
 
@@ -187,7 +189,17 @@ class Commands
             puts "\n#{server} doesn't seem vulnerable\n".yellow
         end
     end
+    def dnsenum(domain)
+        begin
+            puts "\rExample: google.com"
+            puts Net::DNS::Resolver.start(domain, Net::DNS::ANY).answer()
+        rescue => eh 
+            puts "\nSelect a valid target! (example google.com)\n".red[..-5]
+            puts eh
+        end
+    end
 end
+
 while true
     print "\rArb>".green[..-5]
     input = gets.chomp
@@ -255,6 +267,9 @@ while true
         rescue Errno::ECONNREFUSED, SocketError => bruh 
             puts "\nInvalid Target! #{bruh}\n".red
         end
+    elsif input == "dnsenum"
+        print "\rDomain: "
+        exec.dnsenum(gets.chomp)
     elsif input == "-r"
         system("clear||cls")
         puts "Clean".cyan

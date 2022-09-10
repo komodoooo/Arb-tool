@@ -28,12 +28,12 @@ exit         => exit\n""".light_magenta
 end
 
 def logo
-    banner = '''
+    banner = """
                   ___
  ▄▀█ █▀█ █▄▄     / | \ 
  █▀█ █▀▄ █▄█    |--0--|
                  \_|_/        By Komodo
-'''.cyan[..-5]
+""".cyan[..-5]
     print banner
     puts VERSION.show
 end
@@ -59,13 +59,13 @@ class Commands
     def lookup(oscuro)
         urrah = URI("https://ipwhois.app/json/#{oscuro}")
         mlml = Net::HTTP.get(urrah)
-        puts "\n"+mlml.gsub(",", ",\n").yellow
+        puts "\n#{mlml.gsub(",", ",\n")}\n".yellow
     end
     def body(body)
         begin
             puts "\rhere the html code\n"
             body_capture = Net::HTTP.get_response(URI(body))                 
-            print "\n#{body_capture.body.yellow}\n"
+            print "\n#{body_capture.body.yellow}\n\n"
         rescue Errno::ENOENT, Errno::ECONNREFUSED,SocketError
             puts "\rselect a valid target! (example https://pornhub.com)".red
         rescue ArgumentError => ah 
@@ -79,7 +79,7 @@ class Commands
             scrape = parse.css("a[href]").map {|element| element["href"]}
             puts "\nCorrelateds link at #{site}:\n".yellow
             scrape.each do |link|
-                puts "\r#{link}".yellow
+                Thread.new{puts "\r#{link}".yellow}.join
             end
         rescue => eeeeh
             puts "ERROR\n#{eeeeh}\n".red
@@ -109,22 +109,19 @@ class Commands
                 }.join
             end    
         rescue SocketError => sock_err
-            puts "ERROR\n#{sock_err}".red
-            puts ""
+            puts "ERROR\n#{sock_err}\n".red
         end
     end
     def xml_parser(document)
         begin
-            Thread.new{
-                ehm = Nokogiri::XML(open(document)) do |config|  
-                    puts "#{config.strict.noblanks}".yellow[..-5]
-                end
-                print ehm
-                puts "\nAll saved in the file document.xml!"
-                document = File.new("document.xml", 'a')
-                document.write(ehm)
-                document.close()
-            }.join
+            ehm = Nokogiri::XML(open(document)) do |config|  
+                puts "#{config.strict.noblanks}".yellow[..-5]
+            end
+            print ehm
+            puts "\nAll saved in the file document.xml!\n"
+            document = File.new("document.xml", 'a')
+            document.write(ehm)
+            document.close()
         rescue Errno::ENOENT, Errno::ECONNREFUSED, Nokogiri::XML::SyntaxError, URI::InvalidURIError, OpenURI::HTTPError
             puts "\rselect a valid target! (example https://google.com/sitemap.xml)".red
         end
@@ -133,18 +130,21 @@ class Commands
         begin
             wordlist = File.open(wordlist)
             ohyes = wordlist.map {|x| x.chomp }
+            link.delete_suffix!("/") unless link[-1..-1] != "/"
             ohyes.each do |dir|
-                uriiii = URI("#{link}/#{dir}/")
-                requestt = Net::HTTP.get_response(uriiii)
-                if requestt.code == '200'
-                    puts "\ndirectory open! '#{dir}'".yellow
-                    log = File.new("valid.log", "a")
-                    log.write(dir+"\n")
-                    log.close()
-                    puts "saved on file valid.log!".yellow
-                else
-                    puts "\nscanning...#{requestt.code}".cyan                    #directory closed
-                end
+                Thread.new{
+                    uriiii = URI("#{link}/#{dir}/")
+                    requestt = Net::HTTP.get_response(uriiii)
+                    if requestt.code == '200'
+                        puts "\ndirectory open! '#{dir}'".yellow
+                        log = File.new("valid.log", "a")
+                        log.write(dir+"\n")
+                        log.close()
+                        puts "saved on file valid.log!".yellow
+                    else
+                        puts "\nscanning...#{requestt.code}".cyan                    #directory closed
+                    end
+                }.join
             end
         rescue Errno::ENOENT, Errno::ECONNREFUSED
             puts "\rERROR: Select a valid wordlist! (make sure that file of wordlist is on the same path)".red
@@ -207,35 +207,25 @@ while true
     case input
     when "headers"
         print "\rUrl: "
-        sessoinput = gets.chomp
-        exec.headers(sessoinput)
+        exec.headers(gets.chomp)
     when "lookup"
         puts "\rRemember to select a valid target! (example www.twitter.com or 104.244.42.1)".red
         print "\rAddress: ".green
-        url_target = gets.chomp
-        Thread.new{
-            exec.lookup(url_target) do |output|
-                print output
-                puts "\n"
-            end
-        }.join
+        exec.lookup(gets.chomp)
     when "body"
         print "\rUrl: "
-        pazzo = gets.chomp
-        exec.body(pazzo)
+        exec.body(gets.chomp)
     when "linkshunt"
         print "\rUrl: "
-        url = gets.chomp
-        exec.linkshunt(url)
+        exec.linkshunt(gets.chomp)
+        puts "\n"
     when "portscan"
         puts "(example: www.google.com)"
         print "\rAddress: "
-        scan_target = gets.chomp
-        exec.portscanner(scan_target)
+        exec.portscanner(gets.chomp)
     when "xml-parser"
         print "\rUrl: "
-        xmlml = gets.chomp
-        exec.xml_parser(xmlml)
+        exec.xml_parser(gets.chomp)
     when "fuzzer"
         print "\rUrl: "
         fuzz_target = gets.chomp
@@ -249,17 +239,14 @@ while true
                 writereq.close()
             }.join
             puts "\nCreated file wordlist.txt!".yellow
-            Thread.new{
-                exec.fuzzer(fuzz_target, "wordlist.txt")
-            }.join
+            Thread.new{exec.fuzzer(fuzz_target, "wordlist.txt")}.join
         else 
             exec.fuzzer(fuzz_target, wordlist_option)
         end 
     when "ssl"
         puts "\rExample: google.com"
         print "\rAddress: "
-        ssl_target = gets.chomp
-        exec.sexssl?(ssl_target)
+        exec.sexssl?(gets.chomp)
     when "svrscan"
         print "\rUrl: "
         begin

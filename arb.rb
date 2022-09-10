@@ -191,9 +191,10 @@ class Commands
     end
     def dnsenum(domain)
         begin
-            puts Net::DNS::Resolver.start(domain, Net::DNS::ANY).answer()
+            puts " ".yellow[..-5],
+            Net::DNS::Resolver.start(domain, Net::DNS::ANY).answer()
         rescue => eh 
-            puts "\nSelect a valid target! (example www.google.com)\n#{eh}".red[..-5]
+            puts "\nSelect a valid target! (example sex.com)\n#{eh}".red[..-5]
         end
     end
 end
@@ -267,7 +268,7 @@ while true
             puts "\nInvalid Target! #{bruh}\n".red
         end
     when "dnsenum"
-        puts "\rExample: google.com"
+        puts "\rExample: sex.com"
         print "\rDomain: "
         exec.dnsenum(gets.chomp)
     when "-r"

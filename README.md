@@ -28,6 +28,7 @@ xml-parser   => parse an xml document of a site
 -r           => reset & clear display
 banner       => show the banner
 help         => help you :kek:
+license      => view the license
 exit         => exit
 ```
 

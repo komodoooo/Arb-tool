@@ -4,8 +4,8 @@ require 'net/dns'
 require 'net/http'
 require 'nokogiri'
 require 'open-uri'
-require 'socket'
 require 'colorize'
+require 'socket'
 
 
 def help
@@ -24,16 +24,17 @@ xml-parser   => parse an xml document of a site
 -r           => reset & clear display
 banner       => show the banner
 help         => help you :kek:
+license      => view the license
 exit         => exit\n""".light_magenta
 end
 
 def logo
-    banner = """
+    banner = '''
                   ___
  ▄▀█ █▀█ █▄▄     / | \ 
  █▀█ █▀▄ █▄█    |--0--|
                  \_|_/        By Komodo
-""".cyan[..-5]
+'''.cyan[..-5]
     print banner
     puts VERSION.show
 end
@@ -266,6 +267,8 @@ while true
         print help
     when "banner"
         print logo
+    when "license"
+        puts "\n#{File.read("config/LICENSE")}\n".yellow
     else 
        system(input)
     end

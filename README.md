@@ -37,18 +37,19 @@ exit         => exit
 - The ruby programming language and rubygems package manager
 - The gems "nokogiri", "open-uri", "colorize" (and net-http, net-dns & socket system gems)
 
-Tested on Ubuntu WSL, Ubuntu 22.04 LTS, Debian.
+Tested on Ubuntu WSL, Linux Mint, Ubuntu 22.04 LTS, Debian 10.
 
 # New featuers
 1) Added the new dnsenum command, to enumerate DNS
-2) Added the new ssl command, to verify the ssl certificate
-3) Restyled the lookup command: now it works with an API, [this](https://ipwhois.app)
-4) Colors, colors! And more gem compatibility
-5) Now arb is **totally** written with object oriented code
-6) Restyling of the fuzzer command for default wordlist support
-7) Added svrscan command, scan for possible webserver vulns by looking at versions (Apache/Nginx)
+2) Added svrscan command, scan for possible webserver vulns by looking at versions (Apache/Nginx)
+3) Added the new ssl command, to verify the ssl certificate
+4) Restyling of the fuzzer command for default wordlist support
+5) Restyled the lookup command: now it works with an API, [this](https://ipwhois.app)
+6) Colors, colors! And more gem compatibility
+7) Now arb is **totally** written with object oriented code
+ 
 
-Version upgrade (1.8.3 to 2.1.0, latest version. Maybe.)
+Version upgrade (1.8.3 to 2.1.2, latest version. Maybe.)
 
 
 # Credits

@@ -249,7 +249,7 @@ while true
         begin
             exec.svrscan(gets.chomp)
         rescue => err 
-            puts "\nSelect a valid target! (example https://pain.net)\n#{err}".red[..-5]
+            puts "\nSelect a valid target! (example http://pain.net)\n#{err}".red[..-5]
         end
     when "dnsenum"
         puts "\rExample: sex.com"

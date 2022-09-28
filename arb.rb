@@ -51,10 +51,10 @@ class Commands
     def headers(target)
         begin
             response = Net::HTTP.get_response(URI(target))
-            response.to_hash['set-cookie']                     #get the sexy headers
+            response.to_hash['set-cookie']                    
             puts "Headers:\n #{response.to_hash.inspect.gsub("],","],\n")}".yellow
-        rescue Errno::ENOENT, Errno::ECONNREFUSED, SocketError
-            puts "\rselect a valid target! (example https://pornhub.com)".red
+        rescue => err
+            puts "\rselect a valid target! (example https://pornhub.com)\n#{err}".red
         end
     end
     def lookup(oscuro)
@@ -67,10 +67,8 @@ class Commands
             puts "\rhere the html code\n"
             body_capture = Net::HTTP.get_response(URI(body))                 
             print "\n#{body_capture.body.yellow}\n\n"
-        rescue Errno::ENOENT, Errno::ECONNREFUSED,SocketError
-            puts "\rselect a valid target! (example https://pornhub.com)".red
-        rescue ArgumentError => ah 
-            puts "\rERROR: #{ah}".red
+        rescue => err
+            puts "\rselect a valid target! (example https://pornhub.com)\n#{err}".red
         end
     end
     def linkshunt(site)
@@ -82,35 +80,35 @@ class Commands
             scrape.each do |link|
                 Thread.new{puts "\r#{link}".yellow}.join
             end
-        rescue => eeeeh
-            puts "ERROR\n#{eeeeh}\n".red
+        rescue => err
+            puts "\rselect a valid target! (example https://pornhub.com)\n#{err}".red
         end    
     end
     def portscanner(address)  
-        ports = [15,20,21,22,23,25,26,51,53,67,58,67,68,69,80,102,110,119,123,
-                135,139,143,161,162,200,389,443,465,587,631,989,990,
-                993,995,1029,2054,2077,2078,2082,2083,2086,      #most used ports
-                2087,2095,2096,3080,3306,3389,8080,8843,8888]      
-        #ports = Range.new(1,5000)      Ranges? Nah.
+        ports = [15,20,21,22,23,25,51,53,67,68,80,123,135,139,143,161,162,
+                199,220,389,443,445,465,546,547,587,647,847,989,990,993,995,
+                1029,1098,1099,1194,2082,2083,2087,2095,2096,2638,
+                3306,3389,5900,8080,8888]
+        #ports = Range.new(1,9999)      Ranges? Nah.
         begin
-            for numbers in ports
+            for port in ports
                 Thread.new{
                     socket = Socket.new(:INET, :STREAM)
-                    remote_addr = Socket.sockaddr_in(numbers, address)
+                    remote_addr = Socket.sockaddr_in(port, address)
                     begin
                         socket.connect_nonblock(remote_addr)
                     rescue Errno::EINPROGRESS
                     end
-                    sockets = Socket.select(nil, [socket], nil, 1)
+                    sockets = Socket.select(nil, [socket], nil, 0.5)
                     if sockets
-                        puts "\rPort #{numbers} is open".yellow
+                        puts "\rPort #{port} is open \nhttps://www.speedguide.net/port.php?port=#{port}".yellow
                     else
-                       puts "\rPort #{numbers} is closed".red
+                        puts "\rPort #{port} is closed".red
                     end
                 }.join
             end    
-        rescue SocketError => sock_err
-            puts "ERROR\n#{sock_err}\n".red
+        rescue => err
+            puts "Select a velid target! (example www.google.com)\n#{err}".red
         end
     end
     def xml_parser(document)
@@ -123,8 +121,8 @@ class Commands
             document = File.new("document.xml", 'a')
             document.write(ehm)
             document.close()
-        rescue Errno::ENOENT, Errno::ECONNREFUSED, Nokogiri::XML::SyntaxError, URI::InvalidURIError, OpenURI::HTTPError
-            puts "\rselect a valid target! (example https://google.com/sitemap.xml)".red
+        rescue => err
+            puts "\rselect a valid target! (example https://google.com/sitemap.xml)\n#{err}".red
         end
     end
     def fuzzer(link, wordlist)
@@ -152,8 +150,7 @@ class Commands
         rescue Net::OpenTimeout
             puts "\rERROR: Select a valid target! example: http://pain.net".red
         rescue => eeeh
-            puts "ERROR\n#{eeeh}".red
-            puts ""
+            puts "\rERROR:#{eeeh}\n".red
         end
     end
     def sexssl?(oscuro)
@@ -165,9 +162,8 @@ class Commands
         rescue OpenSSL::SSL::SSLError, Errno::EHOSTUNREACH, Errno::ECONNREFUSED
             ssl = false
             puts "#{string} #{ssl}\n\n".yellow[..-5]
-        rescue SocketError, NoMethodError => lmao 
-            puts "\nSelect a valid target! (example www.google.com)".red[..-5]
-            puts lmao
+        rescue => err
+            puts "\nSelect a valid target! (example www.google.com)\n#{err}".red[..-5]
         end
     end
     def svrscan(target)
@@ -252,8 +248,8 @@ while true
         print "\rUrl: "
         begin
             exec.svrscan(gets.chomp)
-        rescue Errno::ECONNREFUSED, SocketError => bruh 
-            puts "\nInvalid Target! #{bruh}\n".red
+        rescue => err 
+            puts "\nSelect a valid target! (example https://pain.net)\n#{err}".red[..-5]
         end
     when "dnsenum"
         puts "\rExample: sex.com"
@@ -268,7 +264,11 @@ while true
     when "banner"
         print logo
     when "license"
-        puts "\n#{File.read("config/LICENSE")}\n".yellow
+        begin 
+            puts "\n#{File.read("config/LICENSE")}\n".yellow
+        rescue => err
+            puts "\rERROR: #{err}\n".red[..-5]
+        end
     else 
        system(input)
     end

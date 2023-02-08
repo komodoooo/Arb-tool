@@ -1,5 +1,4 @@
 #!usr/bin/env ruby
-require_relative 'config/version.rb'
 require 'net/dns'
 require 'net/http'
 require 'nokogiri'
@@ -7,9 +6,7 @@ require 'open-uri'
 require 'colorize'
 require 'socket'
 
-
-def help
-    puts """\n
+HELP = """
 ARB commands:
 lookup       => show informations of a target (ip/domain)
 portscan     => check open ports on a target (ip/domain)
@@ -25,18 +22,22 @@ xml-parser   => parse an xml document of a site
 banner       => show the banner
 help         => help you :kek:
 license      => view the license
-exit         => exit\n""".light_magenta
-end
+exit         => exit\n\n""".light_magenta
 
-def logo
-    banner = '''
+BANNER = '''
                   ___
  ▄▀█ █▀█ █▄▄     / | \ 
  █▀█ █▀▄ █▄█    |--0--|
                  \_|_/        By Komodo
-'''.cyan[..-5]
-    print banner
+
+                 '''.cyan[..-5]
+print BANNER
+
+begin 
+    require_relative 'config/version.rb'
     puts VERSION.show
+rescue LoadError
+    nil
 end
 
 =begin
@@ -46,7 +47,6 @@ shitty codes in arb. It was my first ruby project in 2021
 Right now, I update it in randomly moments
 =end
 
-print logo
 class Commands 
     def headers(target)
         begin
@@ -63,10 +63,15 @@ class Commands
         puts "\n#{mlml.gsub(",", ",\n")}\n".yellow
     end
     def body(body)
+        @bname = body.split("/")[2]
         begin
             puts "\rhere the html code\n"
             body_capture = Net::HTTP.get_response(URI(body))                 
             print "\n#{body_capture.body.yellow}\n\n"
+            bsource = File.new("#{@bname}.html", 'a')
+            bsource.write(body_capture.body)
+            bsource.close()
+            puts "\rAll saved on #{@bname}.html!\n".yellow
         rescue => err
             puts "\rselect a valid target! (example https://pornhub.com)\n#{err}".red
         end
@@ -85,6 +90,7 @@ class Commands
         end    
     end
     def portscanner(address)  
+        puts "\rPress Ctrl+C to interrupt\r".yellow
         ports = [15,20,21,22,23,25,51,53,67,68,80,123,135,139,143,161,162,
                 199,220,389,443,445,465,546,547,587,647,847,989,990,993,995,
                 1029,1098,1099,1194,2082,2083,2087,2095,2096,2638,
@@ -92,12 +98,14 @@ class Commands
         #ports = Range.new(1,9999)      Ranges? Nah.
         begin
             for port in ports
+                begin
                 Thread.new{
                     socket = Socket.new(:INET, :STREAM)
                     remote_addr = Socket.sockaddr_in(port, address)
                     begin
                         socket.connect_nonblock(remote_addr)
                     rescue Errno::EINPROGRESS
+                        nil
                     end
                     sockets = Socket.select(nil, [socket], nil, 0.5)
                     if sockets
@@ -105,9 +113,14 @@ class Commands
                     else
                         puts "\rPort #{port} is closed".red
                     end
-                }.join
+                }.join()
+                rescue Interrupt
+                    #raise "interrupted"
+                    puts "\rInterrupted, press enter to continue.\n".yellow
+                    break
+                end
             end    
-        rescue => err
+        rescue SocketError => err
             puts "Select a velid target! (example www.google.com)\n#{err}".red
         end
     end
@@ -154,14 +167,14 @@ class Commands
         end
     end
     def sexssl?(oscuro)
-        ssl = true
+        @ssl = true
         string = "\n#{oscuro} ssl certificate:"
         begin
             URI.open("https://#{oscuro}")
-            puts "#{string} #{ssl}\n\n".yellow[..-5]
+            puts "#{string} #{@ssl}\n\n".yellow[..-5]
         rescue OpenSSL::SSL::SSLError, Errno::EHOSTUNREACH, Errno::ECONNREFUSED
-            ssl = false
-            puts "#{string} #{ssl}\n\n".yellow[..-5]
+            @ssl = false
+            puts "#{string} #{@ssl}\n\n".yellow[..-5]
         rescue => err
             puts "\nSelect a valid target! (example www.google.com)\n#{err}".red[..-5]
         end
@@ -172,15 +185,15 @@ class Commands
         bruh = r.to_hash["server"].inspect.split().first
         server = r.to_hash["server"].inspect.gsub('["',"").gsub('"]',"")
         begin
-            a = bruh.match("/(.*)")[1].to_s
-            if bruh.include?("Apache") && a.split(".")[1].to_i <= 4 && a.split(".")[2].to_i <= 53
+            @vn = bruh.match("/(.*)")[1].to_s
+            if bruh.include?("Apache") && @vn.split(".")[1].to_i <= 4 && @vn.split(".")[2].to_i <= 53
                 puts "\n#{server} looks vulnerable, check\n".yellow[..-5]
                 puts "https://www.cvedetails.com/vulnerability-list/vendor_id-45/product_id-66/Apache-Http-Server.html\n\n"
-            elsif bruh.include?("nginx") && bruh.match("/(.*)")[1].to_s <= "1.20.0"       
+            elsif bruh.include?("nginx") && @vn <= "1.23.1"       
                 puts "\n#{server} looks vulnerable, check\n".yellow[..-5]
                 puts "http://nginx.org/en/security_advisories.html\n\n"
             else
-                puts "\n#{server} doesn't seem vulnerable\n".yellow
+                puts "\n#{server} doesn't seem vulnerable\nTry to search it on google: https://google.com/search?q=#{server}+vulnerabilities\n".yellow
             end
         rescue NoMethodError 
             puts "\n#{server} doesn't seem vulnerable\n".yellow
@@ -199,7 +212,7 @@ end
 while true
     print "\rArb>".green[..-5]
     input = gets.chomp
-    break if input == "exit"
+    raise "Exited" and break unless input != "exit"
     exec = Commands.new()
     case input
     when "headers"
@@ -260,9 +273,9 @@ while true
         puts "Clean".cyan
         puts "\n"
     when "help"
-        print help
+        print HELP
     when "banner"
-        print logo
+        print BANNER
     when "license"
         begin 
             puts "\n#{File.read("config/LICENSE")}\n".yellow

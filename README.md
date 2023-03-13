@@ -1,16 +1,20 @@
 # ARB 
-#### What is arb? 
+A toolkit written in ruby, since June 2021.
 
-ARB tool is a toolkit written in ruby, since June 2021.
+I'm totally aware of how this project is useless but hey... commit farm.
 
 Now i update it randomly moments, it was my first ruby project lol.
 
 # Getting started
-Clone repository with _`git clone https://github.com/komodoooo/arb-tool`_
+Install ruby and rubygems.
 
-Install the latest version of [Ruby](https://www.ruby-lang.org/en/downloads/)
+Clone repository:
 
-After installing ruby run _`setup.sh`_ as admin, it which will install the necessary dependencies. After that, you can normally execute arb with _`ruby arb.rb`_ for more detailed information, type _`help`_
+_`git clone https://github.com/komodoooo/arb-tool`_
+
+Run _`setup.sh`_, it which will install the necessary dependencies. 
+
+After that, you can normally execute arb with _`ruby arb.rb`_ for more detailed information, type _`help`_
 It will give you the following output:
 
 ```
@@ -35,23 +39,17 @@ exit         => exit
 # Dependencies:
 
 - The ruby programming language and rubygems package manager
-- The gems "nokogiri", "open-uri", "colorize" (and net-http, net-dns & socket system gems)
+- The gems **nokogiri, open-uri, colorize (and net-http, net-dns & socket system gems)**
 
-Tested on Ubuntu WSL, Linux Mint, Ubuntu 22.04 LTS, Debian 10.
+Tested on Many debian-based machines.
 
 # New featuers
-1) _dnsenum_ command, to enumerate DNS
-2) _svrscan_ command, scan for possible webserver vulns by looking at versions (Apache/Nginx)
-3) _ssl_ command, to verify the ssl certificate
-4) Restyling of the _fuzzer_ command for default wordlist support
-5) Restyled the _lookup_ command: now it works with an API, [this](https://ipwhois.app)
-6) Added an [external paper](https://www.speedguide.net) to the _portscan_ command
-7) Colors, more gem compatibility + now arb is **totally** written with object oriented code + errors fix
- 
+1) _svrscan_ command, scan for possible webserver vulns by looking at versions (Apache/Nginx)
+2) Restyling of the _fuzzer_ command for default wordlist support
+3) Restyled the _lookup_ command: now it works with an API, [this](https://ipwhois.app)
+4) Added an [external paper](https://www.speedguide.net) to the _portscan_ command
 
-Version upgrade (1.8.3 to 2.1.2, latest version. Maybe.)
+Version upgrade (2.1.2 to 2.1.3, latest version. Maybe.)
 
-
-# Credits
-
-By **me**
+# Contribute
+You can't

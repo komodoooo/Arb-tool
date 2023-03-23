@@ -6,50 +6,29 @@ I'm totally aware of how this project is useless but hey... commit farm.
 Now i update it randomly moments, it was my first ruby project lol.
 
 # Getting started
-Install ruby and rubygems.
+Clone the repository
 
-Clone repository:
+`git clone https://github.com/komodoooo/arb-tool`
 
-_`git clone https://github.com/komodoooo/arb-tool`_
+Run setup.sh (as admin)
 
-Run _`setup.sh`_, it which will install the necessary dependencies. 
+`bash setup.sh`
 
-After that, you can normally execute arb with _`ruby arb.rb`_ for more detailed information, type _`help`_
-It will give you the following output:
+## Usage
 
 ```
-ARB commands:
-lookup       => show informations of a target (ip/domain)
-portscan     => check open ports on a target (ip/domain)
-dnsenum      => enumerate DNS (ip/domain)
-ssl          => check SSL certificate (ip/domain)
-svrscan      => scan possible vulns of a site's webserver
-fuzzer       => do directory fuzzing in a site
-linkshunt    => show related links on a site
-headers      => return the headers of a site
-body         => capture the html code of a site
-xml-parser   => parse an xml document of a site
--r           => reset & clear display
-banner       => show the banner
-help         => help you :kek:
-license      => view the license
-exit         => exit
+-l, --lookup <IP/DOMAIN>: show informations about a host
+-p, --portscan <IP/DOMAIN>: check well known open ports on a host
+-cs, --check-ssl <IP/DOMAIN>: check SSL certificate
+-d, --dnsenum <IP/DOMAIN>: enumerate DNS
+-s, --svrscan <URL>: scan possible webserver vulns (Apache/Nginx)
+-f, --fuzzer <URL> <WORDLIST>: do directory fuzzing on a site
+-lh, --links-hunt <URL>: show related links on a site
+-h, --help : This
 ```
 
-# Dependencies:
+## Dependencies
 
-- The ruby programming language and rubygems package manager
-- The gems **nokogiri, open-uri, colorize (and net-http, net-dns & socket system gems)**
+_`ruby` `rubygems` `gems net-dns, net-http, nokogiri, open-uri, openssl, socket`_
 
-Tested on Many debian-based machines.
-
-# New featuers
-1) _svrscan_ command, scan for possible webserver vulns by looking at versions (Apache/Nginx)
-2) Restyling of the _fuzzer_ command for default wordlist support
-3) Restyled the _lookup_ command: now it works with an API, [this](https://ipwhois.app)
-4) Added an [external paper](https://www.speedguide.net) to the _portscan_ command
-
-Version upgrade (2.1.2 to 2.1.3, latest version. Maybe.)
-
-# Contribute
-You can't
+**Tested on many debian machines.**

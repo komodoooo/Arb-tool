@@ -6,14 +6,14 @@ require 'openssl'
 require 'socket'
 
 HELP = <<EOF
-
--l, --lookup <IP/DOMAIN>: show informations about a host
--p, --portscan <IP/DOMAIN>: check well known open ports on a host
+\n-l, --lookup <IP/DOMAIN>: show informations about a host
+-ps, --port-scan <IP/DOMAIN>: check well known open ports on a host
 -cs, --check-ssl <IP/DOMAIN>: check SSL certificate
 -d, --dnsenum <IP/DOMAIN>: enumerate DNS
 -s, --svrscan <URL>: scan possible webserver vulns (Apache/Nginx)
 -f, --fuzzer <URL> <WORDLIST>: do directory fuzzing on a site
 -lh, --links-hunt <URL>: show related links on a site
+-px, --proxy-gen : scrape proxies from 3 different sources (http/ssl/socks4)
 -h, --help : This\n\n
 EOF
 
@@ -91,7 +91,7 @@ class Commands
                     log = File.new("valid.log", "a")
                     log.write(dir+"\n")
                     log.close()
-                    puts "saved on file valid.log!"
+                    puts "saved on valid.log file"
                 else
                     puts "\nscanning...#{requestt.code}"
                 end
@@ -141,6 +141,22 @@ class Commands
             return dlambda.call("www."+domain)
         end
     end
+    def proxygen(url, filename, cn=true)
+        rlambda=->(e){e="\r#{e}".split("</td>")[0].split("<td>")[1]}
+        parse=Nokogiri::HTML(URI.open(url))
+        apx='//*[@id="list"]/div/div[2]/div/table/tbody/tr[%d]/td[%d]'
+        log=File.new(filename,"a")
+        1..70.times do |uwu|
+            xaddr=parse.xpath(apx%[uwu+1,1])
+            xport=parse.xpath(apx%[uwu+1,2])
+            if parse.xpath(apx%[uwu+1,7]).to_s[15]=="n"||cn==false
+                puts s="#{rlambda.call(xaddr)}:#{rlambda.call(xport)}"
+                log.write(s+"\n")
+            else next
+            end
+        end
+        log.close()
+    end
 end
 
 begin
@@ -151,7 +167,7 @@ begin
         puts exec.lookup(ARGV[1])
     when "-lh","--links-hunt"
         puts exec.linkshunt(ARGV[1]),"\n"
-    when "-p","--portscan"
+    when "-ps","--port-scan"
         exec.portscanner(ARGV[1])
     when "-f","--fuzzer"
         ft, wordlist = ARGV[1], ARGV[2]
@@ -172,6 +188,13 @@ begin
         puts exec.svrscan(ARGV[1]), "\n"
     when "-d","--dnsenum"
         puts exec.dnsenum(ARGV[1]),"\n"
+    when "-px", "--proxy-gen"
+        phsrc = [["proxy-http.log","proxy-ssl.log","proxy-socks4.log"],
+        ["https://free-proxy-list.net/","https://sslproxies.org/","https://socks-proxy.net/"]]
+        (phsrc.length+1).times do |kk|
+            puts exec.proxygen(phsrc[1][kk], phsrc[0][kk], (false if kk>0))
+        end 
+        print "all saved on #{phsrc[0].join(", ")} files\nyou can check proxies at https://hidemy.name/en/proxy-checker/\n\n"
     when "-h","--help"
         print HELP
     else

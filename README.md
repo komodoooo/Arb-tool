@@ -18,12 +18,13 @@ Run setup.sh (as admin)
 
 ```
 -l, --lookup <IP/DOMAIN>: show informations about a host
--p, --portscan <IP/DOMAIN>: check well known open ports on a host
+-ps, --port-scan <IP/DOMAIN>: check well known open ports on a host
 -cs, --check-ssl <IP/DOMAIN>: check SSL certificate
 -d, --dnsenum <IP/DOMAIN>: enumerate DNS
 -s, --svrscan <URL>: scan possible webserver vulns (Apache/Nginx)
 -f, --fuzzer <URL> <WORDLIST>: do directory fuzzing on a site
 -lh, --links-hunt <URL>: show related links on a site
+-px, --proxy-gen : scrape proxies from 3 different sources (http/ssl/socks4)
 -h, --help : This
 ```
 

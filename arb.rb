@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 require 'net/dns'
 require 'net/http'
 require 'nokogiri'

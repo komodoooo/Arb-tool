@@ -10,9 +10,11 @@ Clone the repository
 
 `git clone https://github.com/komodoooo/arb-tool`
 
-Run setup.sh (as admin)
+Run setup.sh (with sudo privileges)
 
-`bash setup.sh`
+`chmod +x setup.sh && bash setup.sh`
+
+if you cannot install the gem "bundle" try the package `ruby-bundler` in your OS package manager
 
 ## Usage
 
@@ -29,7 +31,8 @@ Run setup.sh (as admin)
 ```
 
 ## Dependencies
+Ruby & Rubygems, see the [Gemfile](https://github.com/komodoooo/Arb-tool/blob/main/config/Gemfile)
 
-_`ruby` `rubygems` `gems net-dns, net-http, nokogiri, open-uri, openssl, socket`_
+Version compatibility: _`2.7<=3.0`+_
 
-**Tested on many debian machines.**
+**Tested on arch and debian based machines**

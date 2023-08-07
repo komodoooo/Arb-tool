@@ -116,7 +116,7 @@ class Commands
         server = r.to_hash["server"].inspect.gsub('["',"").gsub('"]',"")
         begin
             @vn = bruh.match("/(.*)")[1].to_s
-            if bruh.include?("Apache") && @vn.split(".")[1].to_i <= 4 && @vn.split(".")[2].to_i <= 53
+            if bruh.include?("Apache") && @vn.split(".")[1].to_i <= 4 && @vn.split(".")[2].to_i <= 55
                 return "\n#{server} looks vulnerable, check\n"+
                 "https://www.cvedetails.com/vulnerability-list/vendor_id-45/product_id-66/Apache-Http-Server.html\n\n"
             elsif bruh.include?("nginx") && @vn <= "1.23.1"       
@@ -130,11 +130,11 @@ class Commands
     end
     def dnsenum(domain)
         begin
-            Socket.gethostbyname(domain)
+            Addrinfo.getaddrinfo(domain,nil)
         rescue SocketError
             raise Net::DNS::Resolver::Error
         end
-        dlambda=->(d){Net::DNS::Resolver.start(d, Net::DNS::ANY).answer()} 
+        dlambda=->(d){Net::DNS::Resolver.start(d,Net::DNS::A)}
         begin
             return dlambda.call(domain) 
         rescue Net::DNS::Names::ExpandError, TypeError

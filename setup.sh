@@ -1,5 +1,12 @@
 #!/bin/bash
+
+function dperr {
+    apt install ruby-bundler 2>/dev/null
+    pacman -S ruby-bundler 2>/dev/null
+    main;
+}
 function main {
+    trap dperr ERR
     gem install bundle 
     cd config
     bundle install

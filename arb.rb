@@ -27,6 +27,9 @@ BANNER = <<EOF
 
 EOF
 
+$VERBOSE = nil
+OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+
 =begin
 
 Komodo, 5/02/2022
@@ -93,8 +96,10 @@ class Commands
                     log.write(dir+"\n")
                     log.close()
                     puts "saved on valid.log file"
+                elsif requestt.code != '404'
+                    puts "\ndirectory: '#{dir}' code: #{requestt.code}"
                 else
-                    puts "\nscanning...#{requestt.code}"
+                    print "#"
                 end
             }.join
         end
@@ -117,7 +122,7 @@ class Commands
         server = r.to_hash["server"].inspect.gsub('["',"").gsub('"]',"")
         begin
             @vn = bruh.match("/(.*)")[1].to_s
-            if bruh.include?("Apache") && @vn.split(".")[1].to_i <= 4 && @vn.split(".")[2].to_i <= 55
+            if bruh.include?("Apache") && @vn.split(".")[1].to_i <= 4 && @vn.split(".")[2].to_i <= 57
                 return "\n#{server} looks vulnerable, check\n"+
                 "https://www.cvedetails.com/vulnerability-list/vendor_id-45/product_id-66/Apache-Http-Server.html\n\n"
             elsif bruh.include?("nginx") && @vn <= "1.23.1"       

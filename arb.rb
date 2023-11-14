@@ -180,9 +180,9 @@ begin
         if wordlist == nil
             puts "\rNo wordlist selected, loading default wordlist..."
             wordlist = Net::HTTP.get(URI("https://raw.githubusercontent.com/komodoooo/dirfuzzer/main/wordlist.txt"))
-            writereq = File.new("wordlist.txt", "a")
-            writereq.write(wordlist)
-            writereq.close()
+            File.open("wordlist.txt", 'w') do |writereq|
+                writereq.write(wordlist)
+            end
             puts "\nCreated file wordlist.txt!"
             exec.fuzzer(ft, "wordlist.txt")
         else 

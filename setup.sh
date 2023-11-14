@@ -13,5 +13,5 @@ function main {
 }
 main;
 cd ..
-chmod +x arb.rb && cp arb.rb /bin/arb
+chmod +x+w arb.rb && cp arb.rb /bin/arb
 echo "arb.rb has been moved to /bin and can now be used as a system command."
